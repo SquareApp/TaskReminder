@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.ActivityOptionsCompat;
@@ -131,12 +130,13 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             h.taskCategoryText.setText(mData.get(h.getAdapterPosition()).getCategory());
 
-            if (item.getStatus() == 0) {
+            if (item.getStatus() == 0)
+            {
                 h.statusCheckBox.setChecked(false);
-                h.taskName.setPaintFlags(0);
-            } else {
+            }
+            else
+            {
                 h.statusCheckBox.setChecked(true);
-                h.taskName.setPaintFlags(h.taskName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             }
 
 
@@ -155,7 +155,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, cardView, cardView.getTransitionName());
 
                         context.startActivity(viewIntent, optionsCompat.toBundle());
-                    } else {
+                    } else
+                        {
                         context.startActivity(viewIntent);
                     }
 
@@ -292,14 +293,12 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 task.setStatus(1);
                 db.updateTask(task);
                 statusCheckBox.setChecked(true);
-                taskName.setPaintFlags(taskName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
             } else {
                 if (mData.get(getAdapterPosition()).getStatus() == 1) {
                     //mData.get(getAdapterPosition()).setStatus(0);
                     task.setStatus(0);
                     db.updateTask(task);
                     statusCheckBox.setChecked(false);
-                    taskName.setPaintFlags(0);
                 }
             }
 
