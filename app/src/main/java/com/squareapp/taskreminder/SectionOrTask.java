@@ -8,7 +8,7 @@ public class SectionOrTask
 {
 
 
-    private String section;
+    private String sectionDate;
     private String name;
     private String category;
     private String date;
@@ -22,10 +22,10 @@ public class SectionOrTask
 
 
 
-    public static SectionOrTask createSection(String section)
+    public static SectionOrTask createSection(String sectionDate)
     {
         SectionOrTask sec = new SectionOrTask();
-        sec.section = section;
+        sec.sectionDate = sectionDate;
         sec.isTask = false;
 
         return sec;
@@ -49,9 +49,9 @@ public class SectionOrTask
 
 
 
-    public String getSection()
+    public String getSectionDate()
     {
-        return section;
+        return sectionDate;
     }
 
 

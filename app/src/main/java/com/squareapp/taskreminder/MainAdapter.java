@@ -1,6 +1,7 @@
 package com.squareapp.taskreminder;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,14 +10,16 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 
 /**
@@ -30,6 +33,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private Context context;
 
+    private SimpleDateFormat DATE_AND_TIME_FORMAT = new SimpleDateFormat("yyyyMMdd");
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E, MMM dd, yyyy");
 
     private Typeface typeface;
 
@@ -37,6 +42,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private AllTasksFragment allTasksFragment;
 
     private DatabaseHandler db;
+
+    private FragmentManager fragmentManager;
+
+    private MainActivity mainActivity;
 
 
     //Colors
@@ -51,11 +60,15 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private String homeColorEnd;
 
 
-    public MainAdapter(Context context, ArrayList<SectionOrTask> data)
+    public MainAdapter(Context context, ArrayList<SectionOrTask> data, FragmentManager fragmentManager)
     {
 
         mData = data;
         this.context = context;
+
+        mainActivity = (MainActivity)context;
+
+        this.fragmentManager = fragmentManager;
 
 
         typeface = FontCache.get("fonts/fontawesome-webfont.ttf", context);
@@ -126,6 +139,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         {
             final TaskViewHolder h = (TaskViewHolder) holder;
             h.taskName.setText(item.getName());
+            h.taskTimeText.setText(item.getTime());
 
 
             h.taskCategoryText.setText(mData.get(h.getAdapterPosition()).getCategory());
@@ -197,7 +211,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
             SectionViewHolder h = (SectionViewHolder) holder;
             h.dateTextIcon.setTypeface(typeface);
-            h.dateText.setText(item.getSection());
+            h.dateText.setText(getReadableDate(item.getSectionDate()));
             h.dateText.setTextColor(Color.parseColor("#626262"));
             h.dateTextIcon.setTextColor(Color.parseColor("#626262"));
 
@@ -207,6 +221,21 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
 
+    }
+
+    private String getReadableDate(String dateString)
+    {
+        Calendar calendar = Calendar.getInstance();
+        try
+        {
+            calendar.setTime(DATE_AND_TIME_FORMAT.parse(dateString));
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+        return simpleDateFormat.format(calendar.getTime());
     }
 
 
@@ -241,12 +270,13 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
     }
 
-    class TaskViewHolder extends RecyclerView.ViewHolder implements View.OnLongClickListener
+    class TaskViewHolder extends RecyclerView.ViewHolder
     {
 
         TextView taskName;
         TextView taskCategoryText;
         TextView taskCategoryIconText;
+        TextView taskTimeText;
 
         CheckBox statusCheckBox;
 
@@ -266,6 +296,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             taskName = (TextView) itemView.findViewById(R.id.taskName);
             taskCategoryText = (TextView) itemView.findViewById(R.id.taskDateText);
             taskCategoryIconText = (TextView) itemView.findViewById(R.id.taskDateIconText);
+            taskTimeText = (TextView)itemView.findViewById(R.id.taskTimeText);
             taskCategoryIconText.setTypeface(typeface);
             taskCategoryIconText.setText(R.string.fa_icon_tag);
 
@@ -276,35 +307,11 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             cardView = (CardView) itemView.findViewById(R.id.cardItem);
 
 
-            cardView.setOnLongClickListener(this);
 
 
         }
 
-        @Override
-        public boolean onLongClick(View v)
-        {
 
-            SectionOrTask task = mData.get(getAdapterPosition());
-            Log.d("Database", "Item at pos: " + String.valueOf(task.getId()));
-
-            if (mData.get(getAdapterPosition()).getStatus() == 0) {
-                //mData.get(getAdapterPosition()).setStatus(1);
-                task.setStatus(1);
-                db.updateTask(task);
-                statusCheckBox.setChecked(true);
-            } else {
-                if (mData.get(getAdapterPosition()).getStatus() == 1) {
-                    //mData.get(getAdapterPosition()).setStatus(0);
-                    task.setStatus(0);
-                    db.updateTask(task);
-                    statusCheckBox.setChecked(false);
-                }
-            }
-
-
-            return true;
-        }
 
 
     }

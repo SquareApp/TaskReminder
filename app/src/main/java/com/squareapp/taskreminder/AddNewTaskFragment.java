@@ -7,7 +7,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -38,6 +37,8 @@ public class AddNewTaskFragment extends Fragment implements View.OnClickListener
 
     private ActivityOptionsCompat optionsCompat;
 
+    private MainActivity mainActivity;
+
 
 
 
@@ -54,7 +55,9 @@ public class AddNewTaskFragment extends Fragment implements View.OnClickListener
     {
         View rootView = inflater.inflate(R.layout.add_new_task_fragment, container, false);
 
+
         init(rootView);
+        //mainActivity.openAddNewTaskFragment();
 
         setHasOptionsMenu(true);
 
@@ -74,9 +77,12 @@ public class AddNewTaskFragment extends Fragment implements View.OnClickListener
     {
         this.context = getActivity().getApplicationContext();
 
-        optionsCompat = ActivityOptionsCompat.makeBasic();
 
-        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle("Add Task");
+        mainActivity = (MainActivity)getActivity();
+        mainActivity.openAddNewTaskFragment();
+
+        mainActivity.bottomNavigation.animate().translationY(mainActivity.bottomNavigation.getHeight()).setDuration(100);
+
 
         recyclerView = (RecyclerView)rootView.findViewById(R.id.addNewTaskRecyclerView);
 

@@ -1,17 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent"
+    android:background="@android:color/white">
 
+
+    <LinearLayout
+        android:id="@+id/noTasksLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center">
+
+    <ImageView
+        android:id="@+id/noNotificationImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        app:srcCompat="@drawable/ic_notifications_off"
+        android:visibility="visible"
+        />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="No completed tasks"
+            android:textSize="20dp"
+            android:textColor="#a7a7a7"
+            android:layout_gravity="center_horizontal"/>
+
+
+    </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/doneRecyclerView">
+        android:id="@+id/doneRecyclerView"
+        android:visibility="gone">
+
+
 
 
 
     </android.support.v7.widget.RecyclerView>
 
-</LinearLayout>
+</FrameLayout>

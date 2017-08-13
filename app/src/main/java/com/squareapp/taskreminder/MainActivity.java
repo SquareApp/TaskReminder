@@ -4,9 +4,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -14,20 +14,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.roughike.bottombar.BottomBar;
-import com.roughike.bottombar.OnTabSelectListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener
+import it.sephiroth.android.library.bottomnavigation.BottomNavigation;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, BottomNavigation.OnMenuItemSelectionListener
 {
 
     private Toolbar toolbar;
 
-    private BottomBar bottomBar;
+
 
     private android.app.FragmentManager fragmentManager = getFragmentManager();
 
@@ -37,12 +35,19 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView toolbar_saveNewTaskIcon;
     private ImageView toolbar_cancelNewTaskIcon;
 
+    private CoordinatorLayout view;
+
+
+
+    public BottomNavigation bottomNavigation;
+
 
     private DatabaseHandler myDb;
 
     private SimpleDateFormat sdf = new SimpleDateFormat("E, MMM dd, yyyy");
 
     private AddNewTaskFragment addNewTaskFragment;
+    private AllTasksFragment allTasksFragment;
 
 
     @Override
@@ -50,10 +55,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        myDb = new DatabaseHandler(this);
+
+
+        view = (CoordinatorLayout)findViewById(R.id.CoordinatorLayout01);
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
 
-        bottomBar = (BottomBar)findViewById(R.id.bottomBar);
+
+        bottomNavigation = (BottomNavigation)findViewById(R.id.BottomNavigation);
+        bottomNavigation.setDefaultSelectedIndex(1);
+        bottomNavigation.setOnMenuItemClickListener(this);
+
+
+
+
+
 
 
         toolbarTitle = (TextView)toolbar.findViewById(R.id.toolbarTitle);
@@ -69,38 +86,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
-        bottomBar.selectTabAtPosition(1, true);
-        bottomBar.setOnTabSelectListener(new OnTabSelectListener()
-         {
-            @Override
-            public void onTabSelected(@IdRes int tabId)
-            {
-
-                if (tabId == R.id.tab_recent)
-                {
-                    getWindow().setNavigationBarColor(Color.parseColor("#5c2178"));
-                    fragmentManager.beginTransaction().replace(R.id.content_frame, new AllTasksFragment(), "AllTasksFragment").commit();
-                }
-
-                if (tabId == R.id.tab_done)
-                {
-                    getWindow().setNavigationBarColor(Color.parseColor("#d45244"));
-                    fragmentManager.beginTransaction().replace(R.id.content_frame, new DoneFragment()).commit();
-                }
-
-                if(tabId == R.id.tab_friends)
-                {
-                    getWindow().setNavigationBarColor(Color.parseColor("#db8100"));
-                }
-            }
-        });
 
 
 
-        myDb = new DatabaseHandler(this);
+
+
+
+
         //myDb.deleteDatabase();
 
         fragmentManager.beginTransaction().replace(R.id.content_frame, new AllTasksFragment(), "AllTasksFragment").commit();
+
+
     }
 
 
@@ -124,8 +121,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String dateString;
                 String timeString;
 
-                int hour;
-                int minute;
+
                 int taskID;
 
 
@@ -145,12 +141,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-                dateString = this.sdf.format(eventCalendar.getTime());
+                dateString = addNewTaskFragment.addNewTaskAdapter.dateCardViewHolder.databaseFormattedDate;
 
-                hour = eventCalendar.get(Calendar.HOUR_OF_DAY);
-                minute = eventCalendar.get(Calendar.MINUTE);
-
-                timeString = String.valueOf(hour) + ":" + String.valueOf(minute);
+                timeString = addNewTaskFragment.addNewTaskAdapter.dateCardViewHolder.databaseFormattedTime;
 
 
 
@@ -220,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 fragmentManager.beginTransaction().replace(R.id.content_frame, new AllTasksFragment(), "AllTasksFragment").commit();
 
+
         }
 
 
@@ -256,42 +250,67 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
 
             case R.id.toolbar_addNewTaskIcon:
-                Toast.makeText(this, "Add new task", Toast.LENGTH_SHORT).show();
-                openAddNewTaskFragment();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new AddNewTaskFragment(), "AddNewTaskFragment").commit();
                 break;
 
             case R.id.toolbar_saveNewTaskIcon:
                 getData();
-                closeAddNewTaskFragment();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new AllTasksFragment(), "AllTasksFragment").commit();
                 break;
 
             case R.id.toolbar_cancelNewTaskIcon:
-                closeAddNewTaskFragment();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new AllTasksFragment(), "AllTasksFragment").commit();
                 break;
+
 
 
 
 
         }
+
+
+
+
+
+
+
     }
 
 
 
-    private void closeAddNewTaskFragment()
+    public void openAllTasksFragment()
     {
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new AllTasksFragment(), "AllTasksFragment").commit();
         toolbar_addNewTaskIcon.setVisibility(View.VISIBLE);
         toolbar_saveNewTaskIcon.setVisibility(View.GONE);
         toolbar_cancelNewTaskIcon.setVisibility(View.GONE);
     }
 
-    private void openAddNewTaskFragment()
+    public void openAddNewTaskFragment()
     {
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new AddNewTaskFragment(), "AddNewTaskFragment").commit();
         toolbar_addNewTaskIcon.setVisibility(View.GONE);
         toolbar_saveNewTaskIcon.setVisibility(View.VISIBLE);
         toolbar_cancelNewTaskIcon.setVisibility(View.VISIBLE);
     }
 
 
+    @Override
+    public void onMenuItemSelect(@IdRes int i, int i1, boolean b)
+    {
+        switch (i)
+        {
+            case R.id.tab_done:
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new DoneFragment(), "DoneFragment").commit();
+                break;
+
+            case R.id.tab_recent:
+                fragmentManager.beginTransaction().replace(R.id.content_frame, new AllTasksFragment(), "AllTaskFragment").commit();
+                break;
+        }
+    }
+
+    @Override
+    public void onMenuItemReselect(@IdRes int i, int i1, boolean b)
+    {
+
+    }
 }

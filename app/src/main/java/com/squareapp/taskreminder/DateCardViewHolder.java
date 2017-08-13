@@ -5,6 +5,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,12 +31,15 @@ class DateCardViewHolder extends RecyclerView.ViewHolder implements View.OnClick
     public EditText timeEt;
     public EditText dateEt;
 
-    public String actualDate;
+    public String actualDate = null;
+    public String databaseFormattedDate = null;
+    public String databaseFormattedTime = null;
 
-    public Calendar eventCalendar = Calendar.getInstance();
-    private Calendar dateCalendar = Calendar.getInstance();
+    public Calendar eventCalendar = null;
 
-    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E, MMM dd, yyyy");
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E, MMM dd, yyyy");
+    private SimpleDateFormat databaseFormat = new SimpleDateFormat("yyyyMMdd");
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
 
     private TextView notificationTextView;
@@ -49,6 +53,8 @@ class DateCardViewHolder extends RecyclerView.ViewHolder implements View.OnClick
         super(itemView);
 
         this.fragmentManager = fragmentManager;
+
+        eventCalendar = Calendar.getInstance();
 
         cardView = (CardView)itemView.findViewById(R.id.dateCardView);
 
@@ -68,12 +74,13 @@ class DateCardViewHolder extends RecyclerView.ViewHolder implements View.OnClick
 
         dateEt.setText("Today");
 
-        int hour;
-        int minute;
+        this.databaseFormattedDate = databaseFormat.format(eventCalendar.getTime());
+        this.databaseFormattedTime = timeFormat.format(eventCalendar.getTime());
+        timeEt.setText(timeFormat.format(eventCalendar.getTime()));
 
-        hour = eventCalendar.get(Calendar.HOUR_OF_DAY);
-        minute = eventCalendar.get(Calendar.MINUTE);
-        timeEt.setText(String.valueOf(hour) + ":" + String.valueOf(minute));
+        Log.d("Date and Time", databaseFormattedDate + " " + databaseFormattedTime);
+
+
 
 
 
@@ -167,12 +174,12 @@ class DateCardViewHolder extends RecyclerView.ViewHolder implements View.OnClick
         this.eventCalendar.set(Calendar.MONTH, monthOfYear);
         this.eventCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-        dateCalendar.set(Calendar.YEAR, year);
-        dateCalendar.set(Calendar.MONTH, monthOfYear);
-        dateCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
 
 
         String date = simpleDateFormat.format(this.eventCalendar.getTime());
+        this.databaseFormattedDate = databaseFormat.format(this.eventCalendar.getTime());
+        Log.d("onDateSet", databaseFormattedDate);
         this.actualDate = date;
 
 
@@ -184,23 +191,7 @@ class DateCardViewHolder extends RecyclerView.ViewHolder implements View.OnClick
     {
         String timeString;
 
-        if(hourOfDay < 10)
-        {
-            timeString = "0" + String.valueOf(hourOfDay) + ":" + String.valueOf(minute);
-        }
-        if(minute < 10)
-        {
-            timeString =String.valueOf(hourOfDay) + ":" + "0" + String.valueOf(minute);
-        }
 
-        if(hourOfDay < 10 && minute < 10)
-        {
-            timeString = "0" + String.valueOf(hourOfDay) + ":" + "0" + String.valueOf(minute);
-        }
-        else
-        {
-            timeString = String.valueOf(hourOfDay) + ":" + String.valueOf(minute);
-        }
 
 
         eventCalendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
@@ -208,8 +199,9 @@ class DateCardViewHolder extends RecyclerView.ViewHolder implements View.OnClick
         eventCalendar.set(Calendar.SECOND, 0);
 
 
+        this.databaseFormattedTime = timeFormat.format(eventCalendar.getTime());
 
 
-        timeEt.setText(timeString);
+        timeEt.setText(databaseFormattedTime);
     }
 }

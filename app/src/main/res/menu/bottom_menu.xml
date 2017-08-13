@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      app:bbn_itemColorActive="#ffffff"
+      app:bbn_itemColorInactive="#c7c7c7"
+      app:bbn_badgeColor="#FFCC0000"
+      app:bbn_rippleColor="#99FFFFFF"
+        >
+
+    <item
+        android:id="@+id/tab_done"
+        android:color="#3C54B8"
+        android:icon="@drawable/ic_done_all"
+        android:title="Done" />
+    <item
+        android:id="@+id/tab_recent"
+        android:color="#638A00"
+        android:icon="@drawable/ic_restore"
+        android:title="Recent" />
+    <item
+        android:id="@+id/tab_3"
+        android:color="#FF8C00"
+        android:icon="@drawable/ic_save_white"
+        android:title="Tab 3" />
+
+
+
+</menu>

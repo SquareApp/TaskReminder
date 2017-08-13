@@ -24,7 +24,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
     private static final String KEY_NAME = "name";              //column 1
     private static final String KEY_CATEGORY = "category";      //column 2
     private static final String KEY_STATUS = "status";          //column 3
-    private static final String KEY_DATE = "date";              //Column 4
+    private static final String KEY_DATE_DATABASE = "date";     //column 4
     private static final String KEY_TIME = "time";              //Column 5
 
     public int task_ID = -1;
@@ -56,7 +56,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
                 KEY_NAME + " TEXT," +
                 KEY_CATEGORY + " TEXT," +
                 KEY_STATUS + " INTEGER," +
-                KEY_DATE + " TEXT," +
+                KEY_DATE_DATABASE + " TEXT," +
                 KEY_TIME + " TEXT" + ")";
         db.execSQL(CREATE_TASKS_TABLE);
 
@@ -82,7 +82,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
         contentValues.put(KEY_NAME, task.getName());
         contentValues.put(KEY_CATEGORY, task.getCategory());
         contentValues.put(KEY_STATUS, task.getStatus());
-        contentValues.put(KEY_DATE, task.getDate());
+        contentValues.put(KEY_DATE_DATABASE, task.getDate());
         contentValues.put(KEY_TIME, task.getTime());
 
         this.task_ID = (int) db.insert(TABLE_TASKS, null, contentValues);
@@ -101,12 +101,32 @@ public class DatabaseHandler extends SQLiteOpenHelper
             cursor.moveToFirst();
 
         SectionOrTask task = new SectionOrTask();
-        task = SectionOrTask.createTask(cursor.getString(1), cursor.getString(2), Integer.parseInt(cursor.getString(3)), Integer.parseInt(cursor.getString(0)), cursor.getString(4), cursor.getColumnName(5));
+        task = SectionOrTask.createTask(cursor.getString(1),
+                cursor.getString(2),
+                Integer.parseInt(cursor.getString(3)),
+                Integer.parseInt(cursor.getString(0)),
+                cursor.getString(4),
+                cursor.getString(5));
 
         cursor.close();
 
         return task;
 
+    }
+
+
+    public int getTaskCount(int status)
+    {
+        int taskAmn = 0;
+
+        SQLiteDatabase db = getReadableDatabase();
+
+        String countQuery = "SELECT " + KEY_ID + " FROM " + TABLE_TASKS + " WHERE " + KEY_STATUS + " = " +"'" + status + "'";
+
+        Cursor countCursor = db.rawQuery(countQuery, null);
+        taskAmn = countCursor.getCount();
+
+        return taskAmn;
     }
 
 
@@ -159,7 +179,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
         ArrayList<SectionOrTask> allTasksList = new ArrayList<>();
 
         //String allTasks = "SELECT * FROM " + TABLE_TASKS + " WHERE " + KEY_STATUS + " = 0" + " ORDER BY " + KEY_CATEGORY + " DESC";
-        String allTasks = "SELECT * FROM " + TABLE_TASKS + " WHERE " + KEY_STATUS + " = " + "'" + status + "'"  + " ORDER BY " + KEY_DATE + " ASC, " + KEY_CATEGORY + " DESC";
+        String allTasks = "SELECT * FROM " + TABLE_TASKS + " WHERE " + KEY_STATUS + " = " + "'" + status + "'"  + " ORDER BY " + KEY_DATE_DATABASE + " DESC, " + KEY_CATEGORY + " DESC";
 
         SQLiteDatabase db = getReadableDatabase();
 

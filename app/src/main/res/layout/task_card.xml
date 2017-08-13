@@ -17,7 +17,7 @@
     app:cardCornerRadius="2dp"
 
     app:cardElevation="4dp"
-    app:cardBackgroundColor="@android:color/black">
+    app:cardBackgroundColor="#ff9033">
 
 
 
@@ -50,6 +50,7 @@
                 android:id="@+id/taskName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:maxWidth="200dp"
                 android:layout_marginBottom="2dp"
 
                 android:layout_marginTop="5dp"
@@ -83,12 +84,31 @@
                 <TextView
                     android:id="@+id/taskDateText"
                     android:layout_width="wrap_content"
+                    android:maxWidth="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="0dp"
                     android:text="Category"
                     android:textColor="@android:color/white"
                     android:textSize="12dp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/taskTimeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="0dp"
+                    android:text="12:00"
+                    android:textColor="@android:color/white"
+                    android:textSize="12dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"/>
+
+                </RelativeLayout>
 
             </LinearLayout>
 

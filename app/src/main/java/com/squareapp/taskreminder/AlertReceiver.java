@@ -28,6 +28,11 @@ public class AlertReceiver extends BroadcastReceiver
     {
         this.context = context;
         createNotification(intent, context);
+
+
+
+
+
     }
 
 
@@ -51,12 +56,23 @@ public class AlertReceiver extends BroadcastReceiver
 
         SectionOrTask task = new SectionOrTask();
         task = db.getTask(taskID);
+        if(task.getStatus() == 0)
+        {
+            task.setStatus(1);
+        }
+        else
+        {
+            task.setStatus(0);
+        }
+
+        db.updateTask(task);
 
         mBuilder.setContentIntent(notificationIntent);
         mBuilder.setSmallIcon(R.drawable.ic_access_alarm_black);
         mBuilder.setContentTitle(task.getName());
         mBuilder.setContentText(task.getCategory());
         mBuilder.setTicker(task.getName());
+        mBuilder.setColor(Color.rgb(16,171,110));
 
 
         mBuilder.setAutoCancel(true);
