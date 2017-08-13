@@ -1,10 +1,12 @@
 package com.squareapp.taskreminder;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 public class ViewActivity extends AppCompatActivity
@@ -17,7 +19,13 @@ public class ViewActivity extends AppCompatActivity
     private CardView taskCard;
 
     private TextView taskNameText;
-    private TextView taskDateText;
+    private TextView taskCategoryText;
+    private TextView taskCategoryIconText;
+
+    private CheckBox taskCheckbox;
+
+
+    private Typeface typeface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -28,6 +36,8 @@ public class ViewActivity extends AppCompatActivity
 
         myDb = new DatabaseHandler(this);
 
+        typeface = FontCache.get("fonts/fontawesome-webfont.ttf", this);
+
         taskID = getIntent().getIntExtra("Task_ID", 1);
 
         SectionOrTask task = new SectionOrTask();
@@ -36,10 +46,24 @@ public class ViewActivity extends AppCompatActivity
         taskCard = (CardView) findViewById(R.id.taskCardItem);
 
         taskNameText = (TextView)taskCard.findViewById(R.id.taskName);
-        taskDateText = (TextView)taskCard.findViewById(R.id.taskDateText);
+        taskCategoryText = (TextView)taskCard.findViewById(R.id.taskCategoryText);
+        taskCategoryIconText = (TextView)taskCard.findViewById(R.id.taskCategoryIconText);
+
+        taskCheckbox = (CheckBox)taskCard.findViewById(R.id.statusCheckBox);
 
         taskNameText.setText(task.getName());
-        taskDateText.setText(task.getDate());
+        taskCategoryText.setText(task.getCategory());
+        taskCategoryIconText.setTypeface(typeface);
+        taskCategoryIconText.setText(R.string.fa_icon_tag);
+
+        if(task.getStatus() == 0)
+        {
+            taskCheckbox.setChecked(false);
+        }
+        else
+        {
+            taskCheckbox.setChecked(true);
+        }
 
 
 

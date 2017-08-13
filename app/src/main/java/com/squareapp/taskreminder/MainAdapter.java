@@ -4,12 +4,15 @@ import android.app.Activity;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +44,16 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private AllTasksFragment allTasksFragment;
 
+    private Resources resources;
+
     private DatabaseHandler db;
 
     private FragmentManager fragmentManager;
 
     private MainActivity mainActivity;
+
+
+    private int marginLeft, marginRight, marginTop, marginBottom;
 
 
     //Colors
@@ -65,6 +73,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         mData = data;
         this.context = context;
+
+        resources = context.getResources();
 
         mainActivity = (MainActivity)context;
 
@@ -129,6 +139,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
 
+
+
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position)
     {
@@ -137,9 +149,27 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         if (item.isTask())
         {
+
+
             final TaskViewHolder h = (TaskViewHolder) holder;
             h.taskName.setText(item.getName());
             h.taskTimeText.setText(item.getTime());
+
+
+
+            if(h.getAdapterPosition() == getItemCount() -1)
+            {
+
+                //left, top, right, bottom
+                setMarginInPixelFromDP(30, 0, 30, 0);
+
+                CardView.LayoutParams params = new CardView.LayoutParams(
+                        CardView.LayoutParams.WRAP_CONTENT,
+                        CardView.LayoutParams.WRAP_CONTENT
+                );
+                params.setMargins(this.marginLeft, this.marginTop, this.marginRight, (int)(mainActivity.bottomNavigation.getHeight() / 1.5f));
+                h.cardView.setLayoutParams(params);
+            }
 
 
             h.taskCategoryText.setText(mData.get(h.getAdapterPosition()).getCategory());
@@ -164,9 +194,18 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
                         CardView cardView = (CardView) h.view.findViewById(R.id.cardItem);
+                        TextView taskName = (TextView)h.view.findViewById(R.id.taskName);
+                        TextView taskCategory = (TextView)h.view.findViewById(R.id.taskCategoryText);
+                        TextView taskCategoryIcon = (TextView)h.view.findViewById(R.id.taskCategoryIconText);
+                        CheckBox taskCheckbox = (CheckBox)h.view.findViewById(R.id.statusCheckBox);
+                        Pair<View, String> p1 = Pair.create((View)cardView, "cardTransition");
+                        Pair<View, String> p2 = Pair.create((View)taskName, "cardTransition_Name");
+                        Pair<View, String> p3 = Pair.create((View)taskCategory, "cardTransition_Category");
+                        Pair<View, String> p4 = Pair.create((View)taskCategoryIcon, "cardTransition_Icon");
+                        Pair<View, String> p5 = Pair.create((View)taskCheckbox, "cardTransition_CheckBox");
 
 
-                        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, cardView, cardView.getTransitionName());
+                        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1, p2, p3, p4, p5);
 
                         context.startActivity(viewIntent, optionsCompat.toBundle());
                     } else
@@ -221,6 +260,35 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
 
+    }
+
+
+
+    private void setMarginInPixelFromDP(int dp_margin_Left, int dp_margin_Top, int dp_margin_Right, int dp_margin_Bottom)
+    {
+        this.marginLeft = (int) TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp_margin_Left,
+            resources.getDisplayMetrics()
+    );
+
+        this.marginTop = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp_margin_Top,
+                resources.getDisplayMetrics()
+        );
+
+        this.marginRight = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp_margin_Right,
+                resources.getDisplayMetrics()
+        );
+
+        this.marginBottom = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp_margin_Bottom,
+                resources.getDisplayMetrics()
+        );
     }
 
     private String getReadableDate(String dateString)
@@ -294,8 +362,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
             taskName = (TextView) itemView.findViewById(R.id.taskName);
-            taskCategoryText = (TextView) itemView.findViewById(R.id.taskDateText);
-            taskCategoryIconText = (TextView) itemView.findViewById(R.id.taskDateIconText);
+            taskCategoryText = (TextView) itemView.findViewById(R.id.taskCategoryText);
+            taskCategoryIconText = (TextView) itemView.findViewById(R.id.taskCategoryIconText);
             taskTimeText = (TextView)itemView.findViewById(R.id.taskTimeText);
             taskCategoryIconText.setTypeface(typeface);
             taskCategoryIconText.setText(R.string.fa_icon_tag);

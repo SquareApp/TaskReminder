@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView toolbar_cancelNewTaskIcon;
 
     private CoordinatorLayout view;
+
+    private FrameLayout frameLayout;
 
 
 
@@ -62,11 +65,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         toolbar = (Toolbar)findViewById(R.id.toolbar);
 
+        frameLayout = (FrameLayout)findViewById(R.id.content_frame);
+
+
 
         bottomNavigation = (BottomNavigation)findViewById(R.id.BottomNavigation);
-        bottomNavigation.setDefaultSelectedIndex(1);
+        //bottomNavigation.setDefaultSelectedIndex(1);
+        bottomNavigation.setSelectedIndex(1, true);
         bottomNavigation.setOnMenuItemClickListener(this);
-
 
 
 
@@ -192,7 +198,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 Intent alertIntent = new Intent(this, receiver.getClass());
                 alertIntent.putExtra("Notification_ID", taskID);
-                Log.d("AlertIntent", "ID" + String.valueOf(alertIntent.getIntExtra("Notification_ID", 0)));
 
                 AlarmManager alarmManager = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
                 alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, PendingIntent.getBroadcast(this, alertIntent.getIntExtra("Notification_ID", 0), alertIntent, PendingIntent.FLAG_UPDATE_CURRENT));

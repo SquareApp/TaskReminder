@@ -3,13 +3,16 @@ package com.squareapp.taskreminder;
 import android.app.AlarmManager;
 import android.app.Fragment;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
@@ -29,7 +32,7 @@ import java.util.ArrayList;
 public class AllTasksFragment extends Fragment
 {
 
-    public ArrayList<SectionOrTask> dataList;
+    public ArrayList<SectionOrTask> dataList  = new ArrayList<>();;
 
     private MainAdapter mainAdapter;
 
@@ -43,6 +46,9 @@ public class AllTasksFragment extends Fragment
 
     private MainActivity mainActivity;
 
+    private boolean isSwiping = false;
+
+
 
 
     @Nullable
@@ -55,7 +61,7 @@ public class AllTasksFragment extends Fragment
         noTasksLayout = (LinearLayout)rootView.findViewById(R.id.noTasksLayout);
 
 
-        dataList = new ArrayList<>();
+
 
         recyclerView = (RecyclerView)rootView.findViewById(R.id.recyclerview);
 
@@ -69,27 +75,6 @@ public class AllTasksFragment extends Fragment
         mainActivity.bottomNavigation.animate().translationY(0).setDuration(100);
 
 
-
-
-
-
-        //dataList.add(SectionOrTask.createTask("Name", "Work", 0, 0 , "12.01.17", "17:17"));
-        //dataList.add(SectionOrTask.createTask("Name2", "Travel", 0, 0 , "12.01.17", "17:17"));
-
-        dataList = myDb.getAllTasks(0);
-
-        if(dataList.size() > 0)
-        {
-            recyclerView.setVisibility(View.VISIBLE);
-            noTasksLayout.setVisibility(View.GONE);
-        }
-        else
-        {
-            recyclerView.setVisibility(View.GONE);
-            noTasksLayout.setVisibility(View.VISIBLE);
-        }
-
-        completeList(dataList);
 
         mainAdapter = new MainAdapter(getActivity(), dataList, getFragmentManager());
 
@@ -105,6 +90,10 @@ public class AllTasksFragment extends Fragment
 
         ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
         {
+
+
+
+
 
 
             @Override
@@ -128,6 +117,10 @@ public class AllTasksFragment extends Fragment
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction)
             {
+
+
+
+
                 final int position = viewHolder.getAdapterPosition(); //get position which is swipe
                 final int taskID = dataList.get(position).getId();
                 final SectionOrTask task = myDb.getTask(taskID);
@@ -191,12 +184,43 @@ public class AllTasksFragment extends Fragment
     }
 
 
+    private BroadcastReceiver messageReceiver = new BroadcastReceiver()
+    {
+        @Override
+        public void onReceive(Context context, Intent intent)
+        {
+            updateList();
+        }
+    };
+
+
+
+    private void updateList()
+    {
+        dataList.clear();
+        dataList.addAll(myDb.getAllTasks(0));
+        completeList(dataList);
+        mainAdapter.notifyDataSetChanged();
+
+        if(dataList.size() > 0)
+        {
+            recyclerView.setVisibility(View.VISIBLE);
+            noTasksLayout.setVisibility(View.GONE);
+        }
+        else
+        {
+            recyclerView.setVisibility(View.GONE);
+            noTasksLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
+
 
     private void deleteTask(int taskID, int position)
     {
 
 
-        updateView();
+        updateListAfterDeleteTask(taskID);
 
 
 
@@ -276,9 +300,13 @@ public class AllTasksFragment extends Fragment
 
 
 
-    public void updateView()
+    public void updateListAfterDeleteTask(int id)
     {
-        dataList = myDb.getAllTasks(0);
+        myDb.deleteTask(id);
+        dataList.clear();
+        dataList.addAll(myDb.getAllTasks(0));
+        completeList(dataList);
+        mainAdapter.notifyDataSetChanged();
 
         if(dataList.size() > 0)
         {
@@ -290,13 +318,35 @@ public class AllTasksFragment extends Fragment
             recyclerView.setVisibility(View.GONE);
             noTasksLayout.setVisibility(View.VISIBLE);
         }
-
-        completeList(dataList);
-
-        mainAdapter = new MainAdapter(getActivity(), dataList, getFragmentManager());
-
-        recyclerView.setAdapter(mainAdapter);
     }
 
 
+
+
+    /**
+     * Override methods
+     */
+
+    @Override
+    public void onResume()
+    {
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(messageReceiver, new IntentFilter("BROADCAST_REFRESH"));
+        updateList();
+
+
+
+        super.onResume();
+    }
+
+
+    @Override
+    public void onPause()
+    {
+
+        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(messageReceiver);
+
+
+        myDb.close();
+        super.onPause();
+    }
 }

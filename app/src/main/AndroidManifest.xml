@@ -3,6 +3,7 @@
           package="com.squareapp.taskreminder">
 
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 
     <application
@@ -27,12 +28,16 @@
 
 
 
-        <receiver android:name=".AlertReceiver">
+        <receiver android:name=".AlertReceiver" />
+
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true" >
             <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                 />
             </intent-filter>
         </receiver>
-
 
 
     </application>

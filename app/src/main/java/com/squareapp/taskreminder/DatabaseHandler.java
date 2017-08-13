@@ -174,6 +174,9 @@ public class DatabaseHandler extends SQLiteOpenHelper
     }
 
 
+
+    //get all tasks of one status e.g. all tasks which aren't completed yet
+
     public ArrayList<SectionOrTask> getAllTasks(int status)
     {
         ArrayList<SectionOrTask> allTasksList = new ArrayList<>();

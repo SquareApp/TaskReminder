@@ -11,15 +11,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-
-
 
 
 public class AlertReceiver extends BroadcastReceiver
 {
 
     private Context context;
+
+
 
 
 
@@ -34,8 +35,6 @@ public class AlertReceiver extends BroadcastReceiver
 
 
     }
-
-
 
 
 
@@ -83,6 +82,16 @@ public class AlertReceiver extends BroadcastReceiver
 
 
 
+        Intent updateIntent = new Intent("BROADCAST_REFRESH");
+        LocalBroadcastManager.getInstance(context).sendBroadcast(updateIntent);
+
+        db.close();
+
+
+
     }
+
+
+
 }
 

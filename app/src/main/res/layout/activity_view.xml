@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.squareapp.taskreminder.ViewActivity">
+    tools:context="com.squareapp.taskreminder.ViewActivity"
+    android:background="@android:color/white">
 
 
     <android.support.v7.widget.Toolbar
@@ -14,7 +14,8 @@
         android:minHeight="?attr/actionBarSize"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#ffffff">
+        android:background="#ffffff"
+        android:elevation="4dp">
 
 
         <TextView
@@ -34,13 +35,19 @@
     </android.support.v7.widget.Toolbar>
 
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
 
-
-    <include
-        android:id="@+id/taskCardItem"
-        layout="@layout/task_card"
+        <include
+            android:id="@+id/taskCardItem"
+            layout="@layout/view_task_card"
             android:transitionName="cardTransition"
-             />
+            />
+
+
+    </FrameLayout>
 
 </LinearLayout>
