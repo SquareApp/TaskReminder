@@ -6,13 +6,18 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ViewActivity extends AppCompatActivity
-{
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
-    private int taskID;
+public class ViewActivity extends AppCompatActivity implements View.OnClickListener
+{
 
     private DatabaseHandler myDb;
 
@@ -21,11 +26,30 @@ public class ViewActivity extends AppCompatActivity
     private TextView taskNameText;
     private TextView taskCategoryText;
     private TextView taskCategoryIconText;
+    private TextView taskTimeText;
+    private TextView taskDateText;
+    private TextView taskRepetitionText;
+    private TextView taskDescriptionText;
 
     private CheckBox taskCheckbox;
 
 
+
+    private ImageView toolbar_backIcon;
+    private ImageView toolbar_deleteIcon;
+    private ImageView toolbar_editIcon;
+
+
+    private Toolbar myToolbar;
+
     private Typeface typeface;
+
+    private String time;
+    private String date;
+    private String description;
+
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("E, MMM dd, yyyy");
+    private SimpleDateFormat calendarFormat = new SimpleDateFormat("yyyyMMdd");
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,23 +62,92 @@ public class ViewActivity extends AppCompatActivity
 
         typeface = FontCache.get("fonts/fontawesome-webfont.ttf", this);
 
-        taskID = getIntent().getIntExtra("Task_ID", 1);
+        //Toolbar
 
-        SectionOrTask task = new SectionOrTask();
-        task = myDb.getTask(taskID);
+        myToolbar = (Toolbar)findViewById(R.id.toolbar);
 
         taskCard = (CardView) findViewById(R.id.taskCardItem);
 
         taskNameText = (TextView)taskCard.findViewById(R.id.taskName);
         taskCategoryText = (TextView)taskCard.findViewById(R.id.taskCategoryText);
         taskCategoryIconText = (TextView)taskCard.findViewById(R.id.taskCategoryIconText);
+        taskTimeText = (TextView)findViewById(R.id.timeTaskText);
+        taskDateText = (TextView)findViewById(R.id.dateTaskText);
+        taskRepetitionText = (TextView)findViewById(R.id.repetitionTaskText);
+        taskDescriptionText = (TextView)findViewById(R.id.descriptionTaskText);
 
         taskCheckbox = (CheckBox)taskCard.findViewById(R.id.statusCheckBox);
 
-        taskNameText.setText(task.getName());
-        taskCategoryText.setText(task.getCategory());
-        taskCategoryIconText.setTypeface(typeface);
-        taskCategoryIconText.setText(R.string.fa_icon_tag);
+        toolbar_backIcon = (ImageView)myToolbar.findViewById(R.id.toolbar_backIcon);
+        toolbar_deleteIcon = (ImageView)myToolbar.findViewById(R.id.toolbar_deleteTaskIcon);
+        toolbar_editIcon = (ImageView)myToolbar.findViewById(R.id.toolbar_editTaskIcon);
+
+        toolbar_editIcon.setOnClickListener(this);
+        toolbar_deleteIcon.setOnClickListener(this);
+        toolbar_backIcon.setOnClickListener(this);
+
+        //Toolbar end
+
+
+
+        int taskID = 0;
+
+        taskID = getIntent().getIntExtra("Task_ID", 1);
+        getDataFromTask(taskID);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
+    private void getDataFromTask(int taskID)
+    {
+
+
+        SectionOrTask task = new SectionOrTask();
+        task = myDb.getTask(taskID);
+
+
+
+
+        this.taskNameText.setText(task.getName());
+        this.taskCategoryText.setText(task.getCategory());
+        this.taskCategoryIconText.setTypeface(typeface);
+        this.taskCategoryIconText.setText(R.string.fa_icon_tag);
+        String description = task.getDescription();
+        if(description.length() > 0)
+        {
+            this.taskDescriptionText.setText(description);
+        }
+        else
+        {
+            this.taskDescriptionText.setText("No more detailed description");
+        }
+        this.taskTimeText.setText(task.getTime());
+        try
+        {
+            Calendar date = Calendar.getInstance();
+            date.setTime(calendarFormat.parse(task.getDate()));
+            this.taskDateText.setText(dateFormat.format(date.getTime()));
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+
 
         if(task.getStatus() == 0)
         {
@@ -67,11 +160,12 @@ public class ViewActivity extends AppCompatActivity
 
 
 
+        setBackground(task);
 
+    }
 
-
-
-
+    private void setBackground(SectionOrTask task)
+    {
         if(task.getCategory().equals("Work"))
         {
 
@@ -99,10 +193,46 @@ public class ViewActivity extends AppCompatActivity
             gd.setCornerRadius(2f);
             taskCard.setBackground(gd);
         }
+    }
 
 
 
 
 
+    @Override
+    public void onClick(View v)
+    {
+        int id = v.getId();
+
+
+        switch (id)
+        {
+
+            case R.id.toolbar_deleteTaskIcon:
+
+                break;
+
+
+            case R.id.toolbar_backIcon:
+                Log.d("ViewActivity toolbar", "BackIcon");
+                onBackPressed();
+                break;
+
+            case R.id.toolbar_editTaskIcon:
+
+                break;
+
+
+
+
+
+        }
+    }
+
+
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
     }
 }

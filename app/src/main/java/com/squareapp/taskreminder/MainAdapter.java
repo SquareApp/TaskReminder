@@ -36,7 +36,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private Context context;
 
-    private SimpleDateFormat DATE_AND_TIME_FORMAT = new SimpleDateFormat("yyyyMMdd");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E, MMM dd, yyyy");
 
     private Typeface typeface;
@@ -189,7 +189,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 @Override
                 public void onClick(View v)
                 {
-                    Intent viewIntent = new Intent((Activity) context, ViewActivity.class);
+                    Intent viewIntent = new Intent(context, ViewActivity.class);
                     viewIntent.putExtra("Task_ID", item.getId());
 
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
@@ -296,7 +296,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         Calendar calendar = Calendar.getInstance();
         try
         {
-            calendar.setTime(DATE_AND_TIME_FORMAT.parse(dateString));
+            calendar.setTime(dateFormat.parse(dateString));
         }
         catch (ParseException e)
         {

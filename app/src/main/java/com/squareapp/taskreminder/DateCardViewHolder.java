@@ -76,7 +76,7 @@ class DateCardViewHolder extends RecyclerView.ViewHolder implements View.OnClick
 
         this.databaseFormattedDate = databaseFormat.format(eventCalendar.getTime());
         this.databaseFormattedTime = timeFormat.format(eventCalendar.getTime());
-        timeEt.setText(timeFormat.format(eventCalendar.getTime()));
+        timeEt.setText("Now");
 
         Log.d("Date and Time", databaseFormattedDate + " " + databaseFormattedTime);
 
@@ -95,6 +95,7 @@ class DateCardViewHolder extends RecyclerView.ViewHolder implements View.OnClick
 
     private void showTimeFragment()
     {
+        eventCalendar = Calendar.getInstance();
         TimePickerDialog tpd = TimePickerDialog.newInstance(
                 DateCardViewHolder.this,
                 eventCalendar.get(Calendar.HOUR_OF_DAY),
@@ -109,7 +110,7 @@ class DateCardViewHolder extends RecyclerView.ViewHolder implements View.OnClick
 
     private void showDateFragment()
     {
-
+        eventCalendar = Calendar.getInstance();
         DatePickerDialog dpd = DatePickerDialog.newInstance(
                 DateCardViewHolder.this,
                 eventCalendar.get(Calendar.YEAR),

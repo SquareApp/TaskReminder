@@ -23,9 +23,10 @@ public class DatabaseHandler extends SQLiteOpenHelper
     private static final String KEY_ID = "id";                  //column 0
     private static final String KEY_NAME = "name";              //column 1
     private static final String KEY_CATEGORY = "category";      //column 2
-    private static final String KEY_STATUS = "status";          //column 3
-    private static final String KEY_DATE_DATABASE = "date";     //column 4
-    private static final String KEY_TIME = "time";              //Column 5
+    private static final String KEY_DESCRIPTION = "description"; //column 3
+    private static final String KEY_STATUS = "status";          //column 4
+    private static final String KEY_DATE_DATABASE = "date";     //column 5
+    private static final String KEY_TIME = "time";              //Column 6
 
     public int task_ID = -1;
 
@@ -55,6 +56,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
         String CREATE_TASKS_TABLE = "CREATE TABLE " + TABLE_TASKS + "(" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 KEY_NAME + " TEXT," +
                 KEY_CATEGORY + " TEXT," +
+                KEY_DESCRIPTION + " TEXT, " +
                 KEY_STATUS + " INTEGER," +
                 KEY_DATE_DATABASE + " TEXT," +
                 KEY_TIME + " TEXT" + ")";
@@ -81,6 +83,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_NAME, task.getName());
         contentValues.put(KEY_CATEGORY, task.getCategory());
+        contentValues.put(KEY_DESCRIPTION, task.getDescription());
         contentValues.put(KEY_STATUS, task.getStatus());
         contentValues.put(KEY_DATE_DATABASE, task.getDate());
         contentValues.put(KEY_TIME, task.getTime());
@@ -103,10 +106,11 @@ public class DatabaseHandler extends SQLiteOpenHelper
         SectionOrTask task = new SectionOrTask();
         task = SectionOrTask.createTask(cursor.getString(1),
                 cursor.getString(2),
-                Integer.parseInt(cursor.getString(3)),
+                cursor.getString(3),
+                Integer.parseInt(cursor.getString(4)),
                 Integer.parseInt(cursor.getString(0)),
-                cursor.getString(4),
-                cursor.getString(5));
+                cursor.getString(5),
+                cursor.getString(6));
 
         cursor.close();
 
@@ -141,7 +145,11 @@ public class DatabaseHandler extends SQLiteOpenHelper
         ContentValues contentValues = new ContentValues();
         contentValues.put(KEY_NAME, task.getName());
         contentValues.put(KEY_CATEGORY, task.getCategory());
+        contentValues.put(KEY_DESCRIPTION, task.getDescription());
         contentValues.put(KEY_STATUS, task.getStatus());
+        contentValues.put(KEY_DATE_DATABASE, task.getDate());
+        contentValues.put(KEY_TIME, task.getTime());
+
 
 
         // updating row
@@ -195,10 +203,11 @@ public class DatabaseHandler extends SQLiteOpenHelper
                 allTasksList.add(
                         SectionOrTask.createTask(allTasksCursor.getString(1),
                                 allTasksCursor.getString(2),
-                                Integer.parseInt(allTasksCursor.getString(3)),
+                                allTasksCursor.getString(3),
+                                Integer.parseInt(allTasksCursor.getString(4)),
                                 Integer.parseInt(allTasksCursor.getString(0)),
-                                allTasksCursor.getString(4),
-                                allTasksCursor.getString(5)));
+                                allTasksCursor.getString(5),
+                                allTasksCursor.getString(6)));
             }
             while (allTasksCursor.moveToNext());
         }
@@ -224,10 +233,11 @@ public class DatabaseHandler extends SQLiteOpenHelper
                 allTasksList.add(
                         SectionOrTask.createTask(allTasksCursor.getString(1),
                                 allTasksCursor.getString(2),
-                                Integer.parseInt(allTasksCursor.getString(3)),
+                                allTasksCursor.getString(3),
+                                Integer.parseInt(allTasksCursor.getString(4)),
                                 Integer.parseInt(allTasksCursor.getString(0)),
-                                allTasksCursor.getString(4),
-                                allTasksCursor.getString(5)));
+                                allTasksCursor.getString(5),
+                                allTasksCursor.getString(6)));
             }
             while (allTasksCursor.moveToNext());
         }

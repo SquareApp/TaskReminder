@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 //region VARIABLES
                 String name;
                 String category;
+                String description;
                 String dateString;
                 String timeString;
 
@@ -162,6 +163,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 name = addNewTaskFragment.addNewTaskAdapter.editTextCardViewHolder.nameEditText.getText().toString();
                 category = addNewTaskFragment.addNewTaskAdapter.editTextCardViewHolder.spinner.getText().toString();
+                description = addNewTaskFragment.addNewTaskAdapter.editTextCardViewHolder.descriptionEditText.getText().toString();
 
 
                 //endregion
@@ -176,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //region INSERT_IN_DATABSE
 
-                myDb.addTask(SectionOrTask.createTask(name, category, 0, 0, dateString, timeString));
+                myDb.addTask(SectionOrTask.createTask(name, category, description,  0, 0, dateString, timeString));
 
                 //endregion
 

@@ -13,6 +13,7 @@ public class SectionOrTask
     private String category;
     private String date;
     private String time;
+    private String description;
 
     private int status;
     private int id;
@@ -33,11 +34,12 @@ public class SectionOrTask
 
 
 
-    public static SectionOrTask createTask(String name, String category, int status, int id, String date, String time)
+    public static SectionOrTask createTask(String name, String category, String description, int status, int id, String date, String time)
     {
         SectionOrTask task = new SectionOrTask();
         task.name = name;
         task.category = category;
+        task.description = description;
         task.status = status;
         task.isTask = true;
         task.id = id;
@@ -109,6 +111,11 @@ public class SectionOrTask
     public void setTime(String time)
     {
         this.time = time;
+    }
+
+    public String getDescription()
+    {
+        return description;
     }
 }
 
