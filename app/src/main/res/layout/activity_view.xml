@@ -10,6 +10,16 @@
     android:background="@android:color/white">
 
 
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+
+        >
+
+
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:minHeight="?attr/actionBarSize"
@@ -72,8 +82,11 @@
 
     </FrameLayout>
 
+    </LinearLayout>
+
 
     <FrameLayout
+        android:id="@+id/taskInfoLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/white">

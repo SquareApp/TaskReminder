@@ -32,7 +32,7 @@ import java.util.ArrayList;
 public class DoneFragment extends Fragment
 {
 
-    private RecyclerView recyclerView;
+    public RecyclerView recyclerView;
 
     private LinearLayout noTasksLayout;
 
@@ -42,7 +42,7 @@ public class DoneFragment extends Fragment
 
     private DatabaseHandler myDb;
 
-    private ArrayList<SectionOrTask> dataList = new ArrayList<>();;
+    private ArrayList<SectionOrTask> dataList = new ArrayList<>();
 
     private MainActivity mainActivity;
 

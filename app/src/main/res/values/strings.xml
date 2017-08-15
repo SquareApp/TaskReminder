@@ -2,9 +2,6 @@
     <string name="app_name">TaskReminder</string>
 
 
-
-
-
     <!-- this is the color section -->
     <string name="colorTravelStart">#514A9D</string>
     <string name="colorTravelEnd">#24C6DC</string>
@@ -15,8 +12,6 @@
 
     <string name="colorHomeStart">#1D976C</string>
     <string name="colorHomeEnd">#93F9B9</string>
-
-
 
 
 </resources>

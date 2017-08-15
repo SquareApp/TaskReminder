@@ -32,11 +32,11 @@ import java.util.ArrayList;
 public class AllTasksFragment extends Fragment
 {
 
-    public ArrayList<SectionOrTask> dataList  = new ArrayList<>();;
+    public ArrayList<SectionOrTask> dataList  = new ArrayList<>();
 
     private MainAdapter mainAdapter;
 
-    private RecyclerView recyclerView;
+    public RecyclerView recyclerView;
 
     private LinearLayoutManager lm;
 

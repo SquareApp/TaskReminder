@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -32,6 +35,10 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
     private TextView taskDescriptionText;
 
     private CheckBox taskCheckbox;
+
+    private FrameLayout taskInfoLayout;
+
+    private LinearLayout headerLayout;
 
 
 
@@ -56,6 +63,7 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
+        setupTransitions();
 
 
         myDb = new DatabaseHandler(this);
@@ -77,6 +85,10 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
         taskDescriptionText = (TextView)findViewById(R.id.descriptionTaskText);
 
         taskCheckbox = (CheckBox)taskCard.findViewById(R.id.statusCheckBox);
+
+        taskInfoLayout = (FrameLayout)findViewById(R.id.taskInfoLayout);
+
+        headerLayout = (LinearLayout)findViewById(R.id.headerLayout);
 
         toolbar_backIcon = (ImageView)myToolbar.findViewById(R.id.toolbar_backIcon);
         toolbar_deleteIcon = (ImageView)myToolbar.findViewById(R.id.toolbar_deleteTaskIcon);
@@ -111,6 +123,21 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+
+
+    public void setupTransitions() {
+
+        Explode explode = new Explode();
+        explode.setDuration(250);
+        explode.excludeTarget(android.R.id.navigationBarBackground, true);
+        explode.excludeTarget(android.R.id.statusBarBackground, true);
+
+        getWindow().setEnterTransition(explode);
+
+
+    }
+
+
 
     private void getDataFromTask(int taskID)
     {

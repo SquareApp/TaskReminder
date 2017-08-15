@@ -1,6 +1,7 @@
 package com.squareapp.taskreminder;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
@@ -8,10 +9,13 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
-import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v4.util.Pair;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.transition.Fade;
+import android.transition.Transition;
+import android.transition.TransitionSet;
+import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +83,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         mainActivity = (MainActivity)context;
 
         this.fragmentManager = fragmentManager;
+
 
 
         typeface = FontCache.get("fonts/fontawesome-webfont.ttf", context);
@@ -192,7 +197,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     Intent viewIntent = new Intent(context, ViewActivity.class);
                     viewIntent.putExtra("Task_ID", item.getId());
 
-                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                    DoneFragment doneFragment = (DoneFragment) fragmentManager.findFragmentByTag("DoneFragment");
+
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP)
+                    {
                         CardView cardView = (CardView) h.view.findViewById(R.id.cardItem);
                         TextView taskName = (TextView)h.view.findViewById(R.id.taskName);
                         TextView taskCategory = (TextView)h.view.findViewById(R.id.taskCategoryText);
@@ -204,12 +212,28 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         Pair<View, String> p4 = Pair.create((View)taskCategoryIcon, "cardTransition_Icon");
                         Pair<View, String> p5 = Pair.create((View)taskCheckbox, "cardTransition_CheckBox");
 
+                        TransitionSet setExit = new TransitionSet();
+                        Transition transition = new Fade();
+                        transition.excludeTarget(android.R.id.statusBarBackground, true);
+                        transition.excludeTarget(android.R.id.navigationBarBackground, true);
+                        transition.excludeTarget(cardView, true);
+                        transition.setDuration(400);
+                        setExit.addTransition(transition);
 
-                        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1, p2, p3, p4, p5);
 
-                        context.startActivity(viewIntent, optionsCompat.toBundle());
-                    } else
-                        {
+
+
+                        ((Activity) context).getWindow().setSharedElementsUseOverlay(false);
+                        ((Activity) context).getWindow().setReenterTransition(null);
+
+
+                        //ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1, p2, p3, p4, p5);
+                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity)context, p1, p2, p3, p4, p5);
+                        ActivityCompat.startActivity(context, viewIntent, options.toBundle());
+
+                    }
+                    else
+                    {
                         context.startActivity(viewIntent);
                     }
 

@@ -3,8 +3,7 @@
           package="com.squareapp.taskreminder">
 
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:allowBackup="true"
@@ -13,9 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
-                android:theme="@style/AppTheme.NoActionBar.NoTranslucent2"
-            >
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar.NoTranslucent2">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -25,20 +24,15 @@
         <activity android:name=".ViewActivity">
         </activity>
 
-
-
-
-        <receiver android:name=".AlertReceiver" />
-
+        <receiver android:name=".AlertReceiver"/>
         <receiver
             android:name=".BootReceiver"
-            android:enabled="true" >
+            android:enabled="true">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
-                 />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                />
             </intent-filter>
         </receiver>
-
 
     </application>
 
