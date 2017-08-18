@@ -12,11 +12,12 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.transition.Fade;
+import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionSet;
 import android.util.Pair;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,16 +61,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private int marginLeft, marginRight, marginTop, marginBottom;
 
 
-    //Colors
 
-    private String workColorStart;
-    private String workColorEnd;
-
-    private String travelColorStart;
-    private String travelColorEnd;
-
-    private String homeColorStart;
-    private String homeColorEnd;
 
 
     public MainAdapter(Context context, ArrayList<SectionOrTask> data, FragmentManager fragmentManager)
@@ -92,14 +84,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         db = new DatabaseHandler(context);
 
 
-        workColorStart = context.getResources().getString(R.string.colorWorkStart);
-        workColorEnd = context.getResources().getString(R.string.colorWorkEnd);
 
-        travelColorStart = context.getResources().getString(R.string.colorTravelStart);
-        travelColorEnd = context.getResources().getString(R.string.colorTravelEnd);
-
-        homeColorStart = context.getString(R.string.colorHomeStart);
-        homeColorEnd = context.getString(R.string.colorHomeEnd);
 
 
     }
@@ -194,7 +179,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 @Override
                 public void onClick(View v)
                 {
-                    Intent viewIntent = new Intent(context, ViewActivity.class);
+                    Intent viewIntent = new Intent(context, TestActivity.class);
                     viewIntent.putExtra("Task_ID", item.getId());
 
                     DoneFragment doneFragment = (DoneFragment) fragmentManager.findFragmentByTag("DoneFragment");
@@ -212,24 +197,38 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         Pair<View, String> p4 = Pair.create((View)taskCategoryIcon, "cardTransition_Icon");
                         Pair<View, String> p5 = Pair.create((View)taskCheckbox, "cardTransition_CheckBox");
 
+
                         TransitionSet setExit = new TransitionSet();
-                        Transition transition = new Fade();
-                        transition.excludeTarget(android.R.id.statusBarBackground, true);
-                        transition.excludeTarget(android.R.id.navigationBarBackground, true);
-                        transition.excludeTarget(cardView, true);
-                        transition.setDuration(400);
-                        setExit.addTransition(transition);
+
+                        Transition slide = new Slide(Gravity.RIGHT);
+                        slide.setDuration(100);
+                        slide.excludeTarget(android.R.id.navigationBarBackground, true);
+                        slide.excludeTarget(android.R.id.statusBarBackground, true);
+                        slide.excludeTarget(mainActivity.bottomNavigation, true);
+
+                        setExit.addTransition(slide);
+
+
+                        TransitionSet setReenter = new TransitionSet();
+
+                        Transition reenter = new Slide(Gravity.LEFT);
+                        slide.setDuration(25);
+                        slide.excludeTarget(android.R.id.navigationBarBackground, true);
+                        slide.excludeTarget(android.R.id.statusBarBackground, true);
+                        slide.excludeTarget(mainActivity.bottomNavigation, true);
+                        setReenter.addTransition(reenter);
+
+
+
+                        ((Activity)context).getWindow().setReenterTransition(null);
+                        ((Activity)context).getWindow().setExitTransition(setExit);
 
 
 
 
-                        ((Activity) context).getWindow().setSharedElementsUseOverlay(false);
-                        ((Activity) context).getWindow().setReenterTransition(null);
-
-
-                        //ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) context, p1, p2, p3, p4, p5);
                         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity)context, p1, p2, p3, p4, p5);
                         ActivityCompat.startActivity(context, viewIntent, options.toBundle());
+
 
                     }
                     else
@@ -245,7 +244,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (item.getCategory().equals("Work")) {
 
                 GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-                        new int[]{Color.parseColor(workColorStart), Color.parseColor(workColorEnd)});
+                        new int[]{Color.parseColor((context).getString(R.string.colorWorkStart)), Color.parseColor((context).getString(R.string.colorWorkEnd))});
                 gd.setCornerRadius(2f);
                 h.cardView.setBackground(gd);
             }
@@ -253,7 +252,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (item.getCategory().equals("Travel")) {
 
                 GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-                        new int[]{Color.parseColor(travelColorStart), Color.parseColor(travelColorEnd)});
+                        new int[]{Color.parseColor((context).getString(R.string.colorTravelStart)), Color.parseColor((context).getString(R.string.colorTravelEnd))});
                 gd.setCornerRadius(2f);
                 h.cardView.setBackground(gd);
             }
@@ -261,7 +260,16 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             if (item.getCategory().equals("Home")) {
 
                 GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-                        new int[]{Color.parseColor(homeColorStart), Color.parseColor(homeColorEnd)});
+                        new int[]{Color.parseColor((context).getString(R.string.colorHomeStart)), Color.parseColor((context).getString(R.string.colorHomeEnd))});
+                gd.setCornerRadius(2f);
+                h.cardView.setBackground(gd);
+            }
+
+            if(item.getCategory().equals("To-Do"))
+            {
+
+                GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
+                        new int[]{Color.parseColor((context).getString(R.string.colorTodoStart)), Color.parseColor((context).getString(R.string.colorTodoEnd))});
                 gd.setCornerRadius(2f);
                 h.cardView.setBackground(gd);
             }
@@ -331,17 +339,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     }
 
 
-    private String getThemeColor(String theme)
-    {
-        if (theme.equals("Work")) {
-            return workColorStart;
-        } else {
-            if (theme.equals("Travel")) {
-                return travelColorStart;
-            } else
-                return homeColorStart;
-        }
-    }
+
 
 
     class SectionViewHolder extends RecyclerView.ViewHolder

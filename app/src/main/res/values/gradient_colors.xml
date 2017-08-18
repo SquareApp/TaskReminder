@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- this is the color section -->
+    <string name="colorTravelStart">#514A9D</string>
+    <string name="colorTravelEnd">#24C6DC</string>
+
+    <string name="colorWorkStart">#61045F</string>
+    <string name="colorWorkEnd">#AA076B</string>
+
+
+    <string name="colorHomeStart">#1D976C</string>
+    <string name="colorHomeEnd">#93F9B9</string>
+
+    <string name="colorTodoStart">#00c6ff</string>
+    <string name="colorTodoEnd">#0072ff</string>
+
+
+
+
+
+
+</resources>

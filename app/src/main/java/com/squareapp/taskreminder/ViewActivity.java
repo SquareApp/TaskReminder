@@ -7,11 +7,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.transition.Explode;
+import android.transition.Slide;
+import android.transition.Transition;
+import android.transition.TransitionSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,7 +38,6 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
 
     private CheckBox taskCheckbox;
 
-    private FrameLayout taskInfoLayout;
 
     private LinearLayout headerLayout;
 
@@ -66,6 +67,7 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
         setupTransitions();
 
 
+
         myDb = new DatabaseHandler(this);
 
         typeface = FontCache.get("fonts/fontawesome-webfont.ttf", this);
@@ -79,16 +81,21 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
         taskNameText = (TextView)taskCard.findViewById(R.id.taskName);
         taskCategoryText = (TextView)taskCard.findViewById(R.id.taskCategoryText);
         taskCategoryIconText = (TextView)taskCard.findViewById(R.id.taskCategoryIconText);
+
+
         taskTimeText = (TextView)findViewById(R.id.timeTaskText);
         taskDateText = (TextView)findViewById(R.id.dateTaskText);
         taskRepetitionText = (TextView)findViewById(R.id.repetitionTaskText);
         taskDescriptionText = (TextView)findViewById(R.id.descriptionTaskText);
 
+
+
         taskCheckbox = (CheckBox)taskCard.findViewById(R.id.statusCheckBox);
 
-        taskInfoLayout = (FrameLayout)findViewById(R.id.taskInfoLayout);
+
 
         headerLayout = (LinearLayout)findViewById(R.id.headerLayout);
+        headerLayout.setTransitionGroup(true);
 
         toolbar_backIcon = (ImageView)myToolbar.findViewById(R.id.toolbar_backIcon);
         toolbar_deleteIcon = (ImageView)myToolbar.findViewById(R.id.toolbar_deleteTaskIcon);
@@ -125,15 +132,35 @@ public class ViewActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    public void setupTransitions() {
+    public void setupTransitions()
+    {
+        TransitionSet setEnter = new TransitionSet();
 
-        Explode explode = new Explode();
-        explode.setDuration(250);
-        explode.excludeTarget(android.R.id.navigationBarBackground, true);
-        explode.excludeTarget(android.R.id.statusBarBackground, true);
+        Transition slideLeft = new Slide(Gravity.LEFT);
+        slideLeft.setDuration(1000);
+        slideLeft.excludeTarget(android.R.id.navigationBarBackground, true);
+        slideLeft.excludeTarget(android.R.id.statusBarBackground, true);
 
-        getWindow().setEnterTransition(explode);
 
+        setEnter.addTransition(slideLeft);
+
+
+
+
+        TransitionSet setReturn = new TransitionSet();
+
+        Transition slideRight = new Slide(Gravity.RIGHT);
+        slideRight.excludeTarget(android.R.id.navigationBarBackground, true);
+        slideRight.excludeTarget(android.R.id.statusBarBackground, true);
+        slideRight.excludeTarget(headerLayout, true);
+        slideRight.setDuration(1000);
+
+        setReturn.addTransition(slideRight);
+
+
+
+        getWindow().setEnterTransition(setEnter);
+        getWindow().setReturnTransition(setReturn);
 
     }
 

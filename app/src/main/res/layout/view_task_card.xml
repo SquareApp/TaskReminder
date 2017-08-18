@@ -15,7 +15,7 @@
 
     app:cardCornerRadius="2dp"
 
-    app:cardElevation="8dp"
+    app:cardElevation="4dp"
     app:cardBackgroundColor="#ff9033">
 
 

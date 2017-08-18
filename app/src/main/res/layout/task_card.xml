@@ -20,7 +20,6 @@
     app:cardBackgroundColor="#ff9033">
 
 
-
     <LinearLayout
         android:id="@+id/cardLayout"
         android:layout_width="match_parent"
@@ -32,12 +31,12 @@
 
         <CheckBox
             android:id="@+id/statusCheckBox"
-            android:transitionName="cardTransition_CheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:buttonTint="@android:color/white"
             android:layout_gravity="center_vertical"
-            android:clickable="false"/>
+            android:buttonTint="@android:color/white"
+            android:clickable="false"
+            android:transitionName="cardTransition_CheckBox"/>
 
         <LinearLayout
 
@@ -49,20 +48,17 @@
 
             <TextView
                 android:id="@+id/taskName"
-                android:transitionName="cardTransition_Name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxWidth="200dp"
+                android:layout_gravity="center_vertical"
                 android:layout_marginBottom="2dp"
-
                 android:layout_marginTop="5dp"
+
+                android:maxWidth="200dp"
                 android:text="Name"
                 android:textColor="@android:color/white"
                 android:textSize="16dp"
-                android:layout_gravity="center_vertical"/>
-
-
-
+                android:transitionName="cardTransition_Name"/>
 
 
             <LinearLayout
@@ -72,45 +68,45 @@
 
                 <TextView
                     android:id="@+id/taskCategoryIconText"
-                    android:transitionName="cardTransition_Icon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="0dp"
+                    android:layout_marginRight="5dp"
                     android:text="Icon"
                     android:textColor="@android:color/white"
                     android:textSize="12dp"
-                    android:layout_marginRight="5dp"
+                    android:transitionName="cardTransition_Icon"
 
                     />
 
                 <TextView
                     android:id="@+id/taskCategoryText"
-                    android:transitionName="cardTransition_Category"
                     android:layout_width="wrap_content"
-                    android:maxWidth="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="0dp"
+                    android:maxWidth="200dp"
                     android:text="Category"
                     android:textColor="@android:color/white"
-                    android:textSize="12dp"/>
+                    android:textSize="12dp"
+                    android:transitionName="cardTransition_Category"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                <TextView
-                    android:id="@+id/taskTimeText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="0dp"
-                    android:text="12:00"
-                    android:textColor="@android:color/white"
-                    android:textSize="12dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="10dp"/>
+                    <TextView
+                        android:id="@+id/taskTimeText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="0dp"
+                        android:layout_marginRight="10dp"
+                        android:text="12:00"
+                        android:textColor="@android:color/white"
+                        android:textSize="12dp"/>
 
                 </RelativeLayout>
 
@@ -118,7 +114,6 @@
 
 
         </LinearLayout>
-
 
 
     </LinearLayout>
