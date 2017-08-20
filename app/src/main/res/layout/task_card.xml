@@ -6,22 +6,25 @@
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="15dp"
+    android:layout_marginBottom="7.5dp"
+    android:layout_marginTop="7.5dp"
 
-    android:layout_marginLeft="30dp"
-    android:layout_marginRight="30dp"
-    android:orientation="vertical"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+
+    android:layout_gravity="center"
 
     android:transitionName="cardTransition"
 
     app:cardCornerRadius="2dp"
 
+
+
     app:cardElevation="4dp"
-    app:cardBackgroundColor="#ff9033">
+    app:cardBackgroundColor="#ffffff">
 
 
     <LinearLayout
-        android:id="@+id/cardLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="horizontal"
@@ -29,12 +32,16 @@
         >
 
 
+
+
+
+
         <CheckBox
             android:id="@+id/statusCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:buttonTint="@android:color/white"
+            android:buttonTint="#151515"
             android:clickable="false"
             android:transitionName="cardTransition_CheckBox"/>
 
@@ -56,7 +63,7 @@
 
                 android:maxWidth="200dp"
                 android:text="Name"
-                android:textColor="@android:color/white"
+                android:textColor="#151515"
                 android:textSize="16dp"
                 android:transitionName="cardTransition_Name"/>
 
@@ -74,7 +81,7 @@
                     android:layout_marginLeft="0dp"
                     android:layout_marginRight="5dp"
                     android:text="Icon"
-                    android:textColor="@android:color/white"
+                    android:textColor="#151515"
                     android:textSize="12dp"
                     android:transitionName="cardTransition_Icon"
 
@@ -88,7 +95,7 @@
                     android:layout_marginLeft="0dp"
                     android:maxWidth="200dp"
                     android:text="Category"
-                    android:textColor="@android:color/white"
+                    android:textColor="#151515"
                     android:textSize="12dp"
                     android:transitionName="cardTransition_Category"/>
 
@@ -97,15 +104,15 @@
                     android:layout_height="match_parent">
 
                     <TextView
-                        android:id="@+id/taskTimeText"
+                        android:id="@+id/taskDaysLeftText"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_marginBottom="5dp"
                         android:layout_marginLeft="0dp"
                         android:layout_marginRight="10dp"
-                        android:text="12:00"
-                        android:textColor="@android:color/white"
+                        android:text="3 days left"
+                        android:textColor="#151515"
                         android:textSize="12dp"/>
 
                 </RelativeLayout>

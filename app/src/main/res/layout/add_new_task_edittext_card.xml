@@ -16,7 +16,6 @@
 
 
     <LinearLayout
-        android:id="@+id/linearLayoutForCardView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
@@ -26,7 +25,6 @@
 
 
         <LinearLayout
-            android:id="@+id/nameLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -44,7 +42,6 @@
 
 
             <LinearLayout
-                android:id="@+id/nameEditTextLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -72,7 +69,6 @@
 
 
         <LinearLayout
-            android:id="@+id/descriptionEditTextLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -134,7 +130,6 @@
 
 
         <LinearLayout
-            android:id="@+id/categoryLinearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
@@ -152,7 +147,6 @@
 
 
             <LinearLayout
-                android:id="@+id/categoryEditTextLinearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"

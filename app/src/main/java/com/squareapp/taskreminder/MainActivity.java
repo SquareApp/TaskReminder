@@ -100,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //myDb.deleteDatabase();
 
-        //fragmentManager.beginTransaction().replace(R.id.content_frame, new AllTasksFragment(), "AllTasksFragment").commit();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, new AllTasksFragment(), "AllTasksFragment").commit();
 
 
     }
@@ -236,9 +236,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         switch (id)
         {
-            case R.id.saveTaskIcon:
-                getData();
-                break;
+           // case R.id.saveTaskIcon:
+              //  getData();
+              //  break;
         }
 
 

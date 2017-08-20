@@ -35,6 +35,7 @@ public class DoneFragment extends Fragment
     public RecyclerView recyclerView;
 
     private LinearLayout noTasksLayout;
+    public LinearLayout recyclerViewLayout;
 
     private LinearLayoutManager lm;
 
@@ -65,6 +66,7 @@ public class DoneFragment extends Fragment
 
 
         noTasksLayout = (LinearLayout) rootView.findViewById(R.id.noTasksLayout);
+        recyclerViewLayout = (LinearLayout)rootView.findViewById(R.id.recyclerViewLayout);
 
 
         dataList = new ArrayList<>();
@@ -186,12 +188,12 @@ public class DoneFragment extends Fragment
 
         if(dataList.size() > 0)
         {
-            recyclerView.setVisibility(View.VISIBLE);
+            recyclerViewLayout.setVisibility(View.VISIBLE);
             noTasksLayout.setVisibility(View.GONE);
         }
         else
         {
-            recyclerView.setVisibility(View.GONE);
+            recyclerViewLayout.setVisibility(View.GONE);
             noTasksLayout.setVisibility(View.VISIBLE);
         }
     }
@@ -239,12 +241,12 @@ public class DoneFragment extends Fragment
 
         if(dataList.size() > 0)
         {
-            recyclerView.setVisibility(View.VISIBLE);
+            recyclerViewLayout.setVisibility(View.VISIBLE);
             noTasksLayout.setVisibility(View.GONE);
         }
         else
         {
-            recyclerView.setVisibility(View.GONE);
+            recyclerViewLayout.setVisibility(View.GONE);
             noTasksLayout.setVisibility(View.VISIBLE);
         }
     }

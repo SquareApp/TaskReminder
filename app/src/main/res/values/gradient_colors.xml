@@ -2,18 +2,28 @@
 <resources>
 
     <!-- this is the color section -->
-    <string name="colorTravelStart">#514A9D</string>
-    <string name="colorTravelEnd">#24C6DC</string>
+    <string name="colorTravelStart">#781054</string>
+    <string name="colorTravelEnd">#b71880</string>
 
-    <string name="colorWorkStart">#61045F</string>
-    <string name="colorWorkEnd">#AA076B</string>
+    <string name="colorWorkStart">#1d976c</string>
+    <string name="colorWorkEnd">#0ced9f</string>
 
 
-    <string name="colorHomeStart">#1D976C</string>
-    <string name="colorHomeEnd">#93F9B9</string>
+    <string name="colorHomeStart">#1d5e97</string>
+    <string name="colorHomeEnd">#0c84ed</string>
 
-    <string name="colorTodoStart">#00c6ff</string>
-    <string name="colorTodoEnd">#0072ff</string>
+    <string name="colorTodoStart">#0065ab</string>
+    <string name="colorTodoEnd">#008ff5</string>
+
+    <string name="colorStart">#b00342</string>
+    <string name="colorEnd">#ed0c5e</string>
+
+
+    <string name="colorStart2">#019398</string>
+    <string name="colorEnd2">#01d8df</string>
+
+    <string name="colorStart3">#cb2d3e</string>
+    <string name="colorEnd3">#ef473a</string>
 
 
 

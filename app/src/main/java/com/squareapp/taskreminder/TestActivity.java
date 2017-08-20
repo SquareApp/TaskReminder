@@ -1,5 +1,6 @@
 package com.squareapp.taskreminder;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
@@ -9,8 +10,11 @@ import android.support.v7.widget.CardView;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionSet;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -20,7 +24,8 @@ import java.util.Calendar;
 public class TestActivity extends AppCompatActivity
 {
 
-    private SimpleDateFormat databaseformat = new SimpleDateFormat("yyyyMMdd");
+    private SimpleDateFormat databaseDateformat = new SimpleDateFormat("yyyyMMdd");
+    private SimpleDateFormat databaseTimeFormat = new SimpleDateFormat("HH:mm");
     private SimpleDateFormat toUserFormat = new SimpleDateFormat("E, MMM dd, yyyy");
 
     private DatabaseHandler myDb;
@@ -34,11 +39,15 @@ public class TestActivity extends AppCompatActivity
     private TextView taskCategoryIconText;
     private TextView taskDateText;
     private TextView taskTimeText;
+    private TextView taskDaysLeftText;
     private TextView taskDescriptionText;
     private TextView taskRepeitionText;
 
+    private LinearLayout taskCardBackground;
 
     private Typeface fontawesomeTypeface;
+
+    private Resources resources;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -47,6 +56,7 @@ public class TestActivity extends AppCompatActivity
         setContentView(R.layout.activity_test);
         setupTransitions();
         init();
+
         setTaskData(getIntent().getIntExtra("Task_ID", 1));
     }
 
@@ -60,16 +70,21 @@ public class TestActivity extends AppCompatActivity
 
         this.taskCardItem = (CardView)findViewById(R.id.taskCardItem);
 
+        this.taskCardBackground = (LinearLayout)findViewById(R.id.taskCardBackground);
+
         this.taskStatusCheckbox = (CheckBox)taskCardItem.findViewById(R.id.statusCheckBox);
 
         this.taskNameText = (TextView)taskCardItem.findViewById(R.id.taskName);
         this.taskCategoryText = (TextView)taskCardItem.findViewById(R.id.taskCategoryText);
         this.taskCategoryIconText = (TextView)taskCardItem.findViewById(R.id.taskCategoryIconText);
+        this.taskDaysLeftText = (TextView)taskCardItem.findViewById(R.id.taskDaysLeftText);
         taskCategoryIconText.setTypeface(fontawesomeTypeface);
         this.taskDateText = (TextView)findViewById(R.id.dateTaskText);
         this.taskTimeText = (TextView)findViewById(R.id.timeTaskText);
         this.taskDescriptionText = (TextView)findViewById(R.id.descriptionTaskText);
         this.taskRepeitionText = (TextView)findViewById(R.id.repetitionTaskText);
+
+        this.resources = getResources();
 
 
 
@@ -106,7 +121,7 @@ public class TestActivity extends AppCompatActivity
 
         try
         {
-            taskCalendar.setTime(databaseformat.parse(taskDate));
+            taskCalendar.setTime(databaseDateformat.parse(taskDate));
         }
         catch (ParseException e)
         {
@@ -120,6 +135,10 @@ public class TestActivity extends AppCompatActivity
         this.taskDescriptionText.setText(taskDescription);
         this.taskDateText.setText(toUserFormat.format(taskCalendar.getTime()));
         this.taskTimeText.setText(taskTime);
+        this.taskDaysLeftText.setText(setDaysLeft(taskDate));
+        this.taskRepeitionText.setText("Just once");
+
+
 
         if(task.getStatus() == 0)
         {
@@ -130,50 +149,165 @@ public class TestActivity extends AppCompatActivity
             this.taskStatusCheckbox.setChecked(true);
         }
 
-        setBackground(task);
+        setTaskCardColors(task);
+        this.taskCardBackground.setBackground(setLayoutBackground(task));
+
+
+        Log.d("TestActivity", "Time " + taskTime);
 
 
     }
 
 
-    private void setBackground(SectionOrTask task)
+    private String setDaysLeft(String date)
     {
+        Calendar now = Calendar.getInstance();
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.HOUR_OF_DAY, 0);
+
+        Calendar taskDateCalendar = Calendar.getInstance();
+
+        String daysLeftString = null;
+
+        try
+        {
+            taskDateCalendar.setTime(databaseDateformat.parse(date));
+            Log.d("TestActivity", "Parse date -> Success");
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+
+
+
+        long diff = taskDateCalendar.getTimeInMillis() - now.getTimeInMillis();
+
+        float dayCount = (float) diff / (24.0f * 60.0f * 60.0f * 1000.0f);
+
+
+        if(dayCount < 1 && dayCount > 0)
+        {
+            dayCount = 1;
+        }
+
+        if(dayCount < 0 && dayCount >= -1)
+        {
+            dayCount = -1;
+        }
+
+
+
+
+
+
+        Log.d("TestActivity", "Exact value: " + String.valueOf(dayCount));
+        dayCount = Math.round(dayCount *100) / 100;
+
+
+        if((Math.round(dayCount * 100) / 100) == 1)
+        {
+            dayCount = Math.round(dayCount * 100) / 100;
+            daysLeftString = String.valueOf((int)dayCount) + " Day left";
+        }
+
+        if((Math.round(dayCount * 100) / 100) > 1)
+        {
+            dayCount = Math.round(dayCount * 100) / 100;
+            daysLeftString = String.valueOf((int)dayCount) + " Days left";
+        }
+
+
+        if((Math.round(dayCount * 100) / 100) == -1)
+        {
+            dayCount = Math.abs(Math.round(dayCount * 100) / 100);
+            daysLeftString = String.valueOf((int)dayCount) + " Day ago";
+        }
+
+        if((Math.round(dayCount * 100) / 100) < -1)
+        {
+            dayCount = Math.abs(Math.round(dayCount * 100) / 100);
+            daysLeftString = String.valueOf((int)dayCount) + " Days ago";
+        }
+
+
+        return daysLeftString;
+
+    }
+
+
+    private void setTaskCardColors(SectionOrTask task)
+    {
+
+
+  /*
+        myDb.addColor("#781054", "Travel");
+        myDb.addColor("#1d976c", "Work");
+        myDb.addColor("#1d5e97", "Home");
+        myDb.addColor("#0065ab", "To-Do");
+
+   */
+
+
+
+        this.taskCardBackground.setBackgroundColor(Color.parseColor(myDb.getColor(task.getCategory())));
+
+
+
+
+    }
+
+
+    private float setCardViewCornerRadius(int radiusDP)
+    {
+
+        float cornerRadius = 0;
+
+        cornerRadius = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                radiusDP,
+                resources.getDisplayMetrics()
+        );
+
+
+
+        return cornerRadius;
+
+    }
+
+
+    private GradientDrawable setLayoutBackground(SectionOrTask task)
+    {
+
+
+
+
+
+        GradientDrawable gradientDrawable = new GradientDrawable();
+
         if(task.getCategory().equals("Work"))
         {
-
-            GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-                    new int[]{Color.parseColor(getString(R.string.colorWorkStart)), Color.parseColor(getString(R.string.colorWorkEnd))});
-            gd.setCornerRadius(2f);
-            this.taskCardItem.setBackground(gd);
+            gradientDrawable.setColor(Color.parseColor(getString(R.string.colorWorkStart)));
         }
 
 
         if(task.getCategory().equals("Travel"))
         {
-
-            GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-                    new int[]{Color.parseColor(getString(R.string.colorTravelStart)), Color.parseColor(getString(R.string.colorTravelEnd))});
-            gd.setCornerRadius(2f);
-            this.taskCardItem.setBackground(gd);
+            gradientDrawable.setColor(Color.parseColor(getString(R.string.colorTravelStart)));
         }
 
         if(task.getCategory().equals("Home"))
         {
-
-            GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-                    new int[]{Color.parseColor(getString(R.string.colorHomeStart)), Color.parseColor(getString(R.string.colorHomeEnd))});
-            gd.setCornerRadius(2f);
-            this.taskCardItem.setBackground(gd);
+            gradientDrawable.setColor(Color.parseColor(getString(R.string.colorHomeStart)));
         }
 
         if(task.getCategory().equals("To-Do"))
         {
-
-            GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-                    new int[]{Color.parseColor(getString(R.string.colorTodoStart)), Color.parseColor(getString(R.string.colorTodoEnd))});
-            gd.setCornerRadius(2f);
-            this.taskCardItem.setBackground(gd);
+            gradientDrawable.setColor(Color.parseColor(getString(R.string.colorTodoStart)));
         }
+
+        return gradientDrawable;
     }
 
 
@@ -185,17 +319,17 @@ public class TestActivity extends AppCompatActivity
         TransitionSet enterSet = new TransitionSet();
 
         Transition slideHeaderEnter = new Slide(Gravity.TOP);
-        slideHeaderEnter.setDuration(500);
+        slideHeaderEnter.setDuration(300);
         slideHeaderEnter.addTarget(R.id.header);
         slideHeaderEnter.excludeTarget(android.R.id.navigationBarBackground, true);
         slideHeaderEnter.excludeTarget(android.R.id.statusBarBackground, true);
-        slideHeaderEnter.excludeTarget(R.id.test, true);
+        slideHeaderEnter.excludeTarget(R.id.taskInfoLayout, true);
 
         enterSet.addTransition(slideHeaderEnter);
 
         Transition slideTaskLayoutEnter = new Slide(Gravity.BOTTOM);
-        slideTaskLayoutEnter.addTarget(R.id.test);
-        slideTaskLayoutEnter.setDuration(500);
+        slideTaskLayoutEnter.addTarget(R.id.taskInfoLayout);
+        slideTaskLayoutEnter.setDuration(300);
 
         enterSet.addTransition(slideTaskLayoutEnter);
 
@@ -207,19 +341,19 @@ public class TestActivity extends AppCompatActivity
         TransitionSet setReturn = new TransitionSet();
 
         Transition toolbarSlide = new Slide(Gravity.TOP);
-        toolbarSlide.setDuration(570);
+        toolbarSlide.setDuration(300);
         toolbarSlide.addTarget(R.id.header);
         toolbarSlide.excludeTarget(android.R.id.navigationBarBackground, true);
         toolbarSlide.excludeTarget(android.R.id.statusBarBackground, true);
-        toolbarSlide.excludeTarget(R.id.test, true);
+        toolbarSlide.excludeTarget(R.id.taskInfoLayout, true);
 
 
         setReturn.addTransition(toolbarSlide);
 
 
         Transition slideTaskLayoutExit = new Slide(Gravity.BOTTOM);
-        slideTaskLayoutExit.addTarget(R.id.test);
-        slideTaskLayoutExit.setDuration(280);
+        slideTaskLayoutExit.addTarget(R.id.taskInfoLayout);
+        slideTaskLayoutExit.setDuration(300);
 
         setReturn.addTransition(slideTaskLayoutExit);
 

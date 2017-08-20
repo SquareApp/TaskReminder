@@ -20,6 +20,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "tasksManager";
     private static final String TABLE_TASKS = "tasks";
+    private static final String TABLE_COLORS = "colors";
+
     private static final String KEY_ID = "id";                  //column 0
     private static final String KEY_NAME = "name";              //column 1
     private static final String KEY_CATEGORY = "category";      //column 2
@@ -27,6 +29,11 @@ public class DatabaseHandler extends SQLiteOpenHelper
     private static final String KEY_STATUS = "status";          //column 4
     private static final String KEY_DATE_DATABASE = "date";     //column 5
     private static final String KEY_TIME = "time";              //Column 6
+
+    private static final String COLOR_ID = "id";                  //column 0
+    private static final String COLOR_CODE = "name";              //column 1
+    private static final String COLOR_CATEGORY = "category";      //column 2
+
 
     public int task_ID = -1;
 
@@ -62,6 +69,17 @@ public class DatabaseHandler extends SQLiteOpenHelper
                 KEY_TIME + " TEXT" + ")";
         db.execSQL(CREATE_TASKS_TABLE);
 
+
+
+
+
+        String CREATE_COLOR_TABLE = "CREATE TABLE " + TABLE_COLORS + "(" + COLOR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                COLOR_CODE + " TEXT," +
+                COLOR_CATEGORY + " TEXT"
+                + ")";
+        db.execSQL(CREATE_COLOR_TABLE);
+
+
     }
 
     @Override
@@ -69,6 +87,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
     {
 
         db.execSQL("DROP TABLE IF EXISTS" + TABLE_TASKS);
+        db.execSQL("DROP TABLE IF EXISTS" + TABLE_COLORS);
         onCreate(db);
 
 
@@ -90,6 +109,21 @@ public class DatabaseHandler extends SQLiteOpenHelper
 
         this.task_ID = (int) db.insert(TABLE_TASKS, null, contentValues);
         db.close();
+    }
+
+
+    public void addColor(String color, String category)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues colorContentValues = new ContentValues();
+        colorContentValues.put(COLOR_CODE, color);
+        colorContentValues.put(COLOR_CATEGORY, category);
+
+        db.insert(TABLE_COLORS, null, colorContentValues);
+
+        db.close();
+
     }
 
     public SectionOrTask getTask(int id)
@@ -115,6 +149,28 @@ public class DatabaseHandler extends SQLiteOpenHelper
         cursor.close();
 
         return task;
+
+    }
+
+
+    public String getColor(String category)
+    {
+        SQLiteDatabase db = getReadableDatabase();
+
+
+        String query = "SELECT * FROM " + TABLE_COLORS + " WHERE " + COLOR_CATEGORY + " = " +  "'" + category + "'";
+        String colorCode = null;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if(cursor != null)
+            cursor.moveToFirst();
+
+
+        colorCode = cursor.getString(1);
+
+        cursor.close();
+
+        return colorCode;
 
     }
 
@@ -161,6 +217,9 @@ public class DatabaseHandler extends SQLiteOpenHelper
     }
 
 
+
+
+
     public void deleteTask(int id)
     {
         SQLiteDatabase db = getWritableDatabase();
@@ -172,6 +231,21 @@ public class DatabaseHandler extends SQLiteOpenHelper
                 };
 
         db.delete(TABLE_TASKS, whereClause, whereArguments);
+        db.close();
+    }
+
+
+    public void deleteColor(String category)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+
+        String whereClause = COLOR_CATEGORY + " =?";
+        String[] whereArguments = new String[]
+                {
+                        category
+                };
+
+        db.delete(TABLE_COLORS, whereClause, whereArguments);
         db.close();
     }
 

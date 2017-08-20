@@ -8,14 +8,13 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.graphics.drawable.GradientDrawable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionSet;
-import android.util.Pair;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -43,6 +42,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("E, MMM dd, yyyy");
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
 
     private Typeface typeface;
 
@@ -56,6 +56,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private FragmentManager fragmentManager;
 
     private MainActivity mainActivity;
+
+    private Calendar now = Calendar.getInstance();
 
 
     private int marginLeft, marginRight, marginTop, marginBottom;
@@ -141,9 +143,10 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         {
 
 
+
             final TaskViewHolder h = (TaskViewHolder) holder;
             h.taskName.setText(item.getName());
-            h.taskTimeText.setText(item.getTime());
+            h.taskTimeLeft.setText(setDaysLeft(item.getDate()));
 
 
 
@@ -151,7 +154,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             {
 
                 //left, top, right, bottom
-                setMarginInPixelFromDP(30, 0, 30, 0);
+                setMarginInPixelFromDP(20, 7.5f, 20, 7.5f);
 
                 CardView.LayoutParams params = new CardView.LayoutParams(
                         CardView.LayoutParams.WRAP_CONTENT,
@@ -162,7 +165,9 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             }
 
 
-            h.taskCategoryText.setText(mData.get(h.getAdapterPosition()).getCategory());
+            h.taskCategoryText.setText(item.getCategory());
+            h.taskCategoryText.setTextColor(Color.parseColor(setTaskCardColors(item)));
+            h.taskCategoryIconText.setTextColor(Color.parseColor(setTaskCardColors(item)));
 
             if (item.getStatus() == 0)
             {
@@ -187,24 +192,18 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                     if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP)
                     {
                         CardView cardView = (CardView) h.view.findViewById(R.id.cardItem);
-                        TextView taskName = (TextView)h.view.findViewById(R.id.taskName);
-                        TextView taskCategory = (TextView)h.view.findViewById(R.id.taskCategoryText);
-                        TextView taskCategoryIcon = (TextView)h.view.findViewById(R.id.taskCategoryIconText);
-                        CheckBox taskCheckbox = (CheckBox)h.view.findViewById(R.id.statusCheckBox);
-                        Pair<View, String> p1 = Pair.create((View)cardView, "cardTransition");
-                        Pair<View, String> p2 = Pair.create((View)taskName, "cardTransition_Name");
-                        Pair<View, String> p3 = Pair.create((View)taskCategory, "cardTransition_Category");
-                        Pair<View, String> p4 = Pair.create((View)taskCategoryIcon, "cardTransition_Icon");
-                        Pair<View, String> p5 = Pair.create((View)taskCheckbox, "cardTransition_CheckBox");
+
+
 
 
                         TransitionSet setExit = new TransitionSet();
 
                         Transition slide = new Slide(Gravity.RIGHT);
-                        slide.setDuration(100);
+                        slide.setDuration(50);
                         slide.excludeTarget(android.R.id.navigationBarBackground, true);
                         slide.excludeTarget(android.R.id.statusBarBackground, true);
-                        slide.excludeTarget(mainActivity.bottomNavigation, true);
+                        //slide.excludeTarget(mainActivity.bottomNavigation, true);
+                        slide.excludeTarget(cardView, true);
 
                         setExit.addTransition(slide);
 
@@ -215,7 +214,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                         slide.setDuration(25);
                         slide.excludeTarget(android.R.id.navigationBarBackground, true);
                         slide.excludeTarget(android.R.id.statusBarBackground, true);
-                        slide.excludeTarget(mainActivity.bottomNavigation, true);
+                        //slide.excludeTarget(mainActivity.bottomNavigation, true);
                         setReenter.addTransition(reenter);
 
 
@@ -226,7 +225,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
 
-                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity)context, p1, p2, p3, p4, p5);
+                        ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation((Activity)context, cardView, "cardTransition");
                         ActivityCompat.startActivity(context, viewIntent, options.toBundle());
 
 
@@ -241,38 +240,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             });
 
 
-            if (item.getCategory().equals("Work")) {
-
-                GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-                        new int[]{Color.parseColor((context).getString(R.string.colorWorkStart)), Color.parseColor((context).getString(R.string.colorWorkEnd))});
-                gd.setCornerRadius(2f);
-                h.cardView.setBackground(gd);
-            }
-
-            if (item.getCategory().equals("Travel")) {
-
-                GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-                        new int[]{Color.parseColor((context).getString(R.string.colorTravelStart)), Color.parseColor((context).getString(R.string.colorTravelEnd))});
-                gd.setCornerRadius(2f);
-                h.cardView.setBackground(gd);
-            }
-
-            if (item.getCategory().equals("Home")) {
-
-                GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-                        new int[]{Color.parseColor((context).getString(R.string.colorHomeStart)), Color.parseColor((context).getString(R.string.colorHomeEnd))});
-                gd.setCornerRadius(2f);
-                h.cardView.setBackground(gd);
-            }
-
-            if(item.getCategory().equals("To-Do"))
-            {
-
-                GradientDrawable gd = new GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT,
-                        new int[]{Color.parseColor((context).getString(R.string.colorTodoStart)), Color.parseColor((context).getString(R.string.colorTodoEnd))});
-                gd.setCornerRadius(2f);
-                h.cardView.setBackground(gd);
-            }
+            //h.cardView.setBackground(setTaskCardBackground(item));
 
 
         }
@@ -294,9 +262,128 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
+    private String setTaskCardColors(SectionOrTask task)
+    {
 
 
-    private void setMarginInPixelFromDP(int dp_margin_Left, int dp_margin_Top, int dp_margin_Right, int dp_margin_Bottom)
+        String colorCode;
+
+  /*
+        myDb.addColor("#781054", "Travel");
+        myDb.addColor("#1d976c", "Work");
+        myDb.addColor("#1d5e97", "Home");
+        myDb.addColor("#0065ab", "To-Do");
+
+   */
+
+
+
+        colorCode = db.getColor(task.getCategory());
+
+        return colorCode;
+
+
+    }
+
+
+
+    private float setCardViewCornerRadius(int radiusDP)
+    {
+
+        float cornerRadius = 0;
+
+        cornerRadius = (int) TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                radiusDP,
+                resources.getDisplayMetrics()
+        );
+
+
+
+        return cornerRadius;
+
+    }
+
+
+    private String setDaysLeft(String date)
+    {
+        Calendar now = Calendar.getInstance();
+        now.set(Calendar.MINUTE, 0);
+        now.set(Calendar.HOUR_OF_DAY, 0);
+
+        Calendar taskDateCalendar = Calendar.getInstance();
+
+        String daysLeftString = null;
+
+        try
+        {
+            taskDateCalendar.setTime(dateFormat.parse(date));
+            Log.d("MainAdapter", "Parse date -> Success");
+        }
+        catch (ParseException e)
+        {
+            e.printStackTrace();
+        }
+
+
+
+
+        long diff = taskDateCalendar.getTimeInMillis() - now.getTimeInMillis();
+
+        float dayCount = (float) diff / (24.0f * 60.0f * 60.0f * 1000.0f);
+
+
+        if(dayCount < 1 && dayCount > 0)
+        {
+            dayCount = 1;
+        }
+
+        if(dayCount < 0 && dayCount >= -1)
+        {
+            dayCount = -1;
+        }
+
+
+
+
+
+
+        Log.d("MainAdapter", "Exact value: " + String.valueOf(dayCount));
+        dayCount = Math.round(dayCount *100) / 100;
+
+
+        if((Math.round(dayCount * 100) / 100) == 1)
+        {
+            dayCount = Math.round(dayCount * 100) / 100;
+            daysLeftString = String.valueOf((int)dayCount) + " Day left";
+        }
+
+        if((Math.round(dayCount * 100) / 100) > 1)
+        {
+            dayCount = Math.round(dayCount * 100) / 100;
+            daysLeftString = String.valueOf((int)dayCount) + " Days left";
+        }
+
+
+        if((Math.round(dayCount * 100) / 100) == -1)
+        {
+            dayCount = Math.abs(Math.round(dayCount * 100) / 100);
+            daysLeftString = String.valueOf((int)dayCount) + " Day ago";
+        }
+
+        if((Math.round(dayCount * 100) / 100) < -1)
+        {
+            dayCount = Math.abs(Math.round(dayCount * 100) / 100);
+            daysLeftString = String.valueOf((int)dayCount) + " Days ago";
+        }
+
+
+        return daysLeftString;
+
+    }
+
+
+    private void setMarginInPixelFromDP(float dp_margin_Left, float dp_margin_Top, float dp_margin_Right, float dp_margin_Bottom)
     {
         this.marginLeft = (int) TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
@@ -342,12 +429,13 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
 
+
+
     class SectionViewHolder extends RecyclerView.ViewHolder
     {
 
         TextView dateText;
         TextView dateTextIcon;
-        TextView themeAmount;
 
         public SectionViewHolder(View itemView)
         {
@@ -366,7 +454,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         TextView taskName;
         TextView taskCategoryText;
         TextView taskCategoryIconText;
-        TextView taskTimeText;
+        TextView taskTimeLeft;
 
         CheckBox statusCheckBox;
 
@@ -386,7 +474,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             taskName = (TextView) itemView.findViewById(R.id.taskName);
             taskCategoryText = (TextView) itemView.findViewById(R.id.taskCategoryText);
             taskCategoryIconText = (TextView) itemView.findViewById(R.id.taskCategoryIconText);
-            taskTimeText = (TextView)itemView.findViewById(R.id.taskTimeText);
+            taskTimeLeft = (TextView)itemView.findViewById(R.id.taskDaysLeftText);
             taskCategoryIconText.setTypeface(typeface);
             taskCategoryIconText.setText(R.string.fa_icon_tag);
 

@@ -1,18 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="fa_icon_areachart">&#xf1fe;</string>
-    <string name="fa_icon_piechart">&#xf200;</string>
-    <string name="fa_icon_linechart">&#xf201;</string>
-    <string name="fa_icon_work">&#xf1ad;</string>
-    <string name="fa_icon_travel">&#xf072;</string>
-    <string name="fa_icon_home">&#xf015;</string>
-    <string name="fa_icon_task">&#xf0ae;</string>
-    <string name="fa_icon_settings">&#xf0ad;</string>
-    <string name="fa_icon_about">&#xf129;</string>
-    <string name="fa_icon_todolist">&#xf0ca;</string>
-    <string name="fa_icon_today">&#xf185;</string>
-    <string name="fa_icon_cross">&#xf00d;</string>
     <string name="fa_icon_date">&#xf073;</string>
     <string name="fa_icon_tag">&#xf02b;</string>
 

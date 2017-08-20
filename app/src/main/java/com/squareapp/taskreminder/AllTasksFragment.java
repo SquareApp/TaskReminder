@@ -179,7 +179,6 @@ public class AllTasksFragment extends Fragment
 
 
 
-
         return rootView;
     }
 
@@ -207,11 +206,16 @@ public class AllTasksFragment extends Fragment
             recyclerView.setVisibility(View.VISIBLE);
             noTasksLayout.setVisibility(View.GONE);
         }
-        else
-        {
-            recyclerView.setVisibility(View.GONE);
-            noTasksLayout.setVisibility(View.VISIBLE);
-        }
+
+            if(dataList.size() == 0)
+            {
+                recyclerView.setVisibility(View.GONE);
+                noTasksLayout.setVisibility(View.VISIBLE);
+
+            }
+
+
+        Log.d("AllTasksFragment", String.valueOf(dataList.size()));
     }
 
 
