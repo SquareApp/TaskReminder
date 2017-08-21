@@ -7,21 +7,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -84,84 +80,6 @@ public class DoneFragment extends Fragment
         recyclerView.setAdapter(mainAdapter);
 
 
-
-        ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT)
-        {
-
-
-            @Override
-            public int getSwipeDirs(RecyclerView recyclerView, RecyclerView.ViewHolder holder)
-            {
-                int position = holder.getAdapterPosition();
-
-                if(dataList.get(position).isTask() == false)
-                    return 0;
-                else
-                    return super.getSwipeDirs(recyclerView,holder);
-
-            }
-
-            @Override
-            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target)
-            {
-                return false;
-            }
-
-            @Override
-            public void onSwiped(final RecyclerView.ViewHolder viewHolder, int direction)
-            {
-                final int position = viewHolder.getAdapterPosition(); //get position which is swipe
-                final int taskID = dataList.get(position).getId();
-                final SectionOrTask task = myDb.getTask(taskID);
-                Log.d("Task swipe Time: ", task.getTime());
-                final Handler deleteHandler = new Handler();
-                final Runnable runnable = new Runnable()
-                {
-                    @Override
-                    public void run()
-                    {
-                        deleteTask(taskID, position);
-                    }
-                };
-
-                deleteHandler.postDelayed(runnable, 3500);
-
-                if(dataList.get(position).isTask() == true)
-                {
-
-                    Snackbar snackbar = Snackbar.make(rootView, "1 item removed", Snackbar.LENGTH_LONG);
-                    snackbar.setAction("Undo", new View.OnClickListener()
-                    {
-                        @Override
-                        public void onClick(View v)
-                        {
-                            deleteHandler.removeCallbacks(runnable);
-                            dataList.add(position, task);
-                            mainAdapter.notifyItemInserted(position);
-                            mainAdapter.notifyItemRangeChanged(position, mainAdapter.getItemCount());
-
-                        }
-                    });
-                    snackbar.setActionTextColor(Color.WHITE);
-
-                    snackbar.show();
-
-                    dataList.remove(position);
-                    mainAdapter.notifyItemRemoved(position);
-                    mainAdapter.notifyItemRangeChanged(position, mainAdapter.getItemCount());
-
-                }
-                else
-                {
-                    Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
-                }
-
-
-
-            }
-        };
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView); //set swipe to recylcerview
 
 
 

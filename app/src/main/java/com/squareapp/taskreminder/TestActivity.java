@@ -7,13 +7,16 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionSet;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -21,7 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class TestActivity extends AppCompatActivity
+public class TestActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener
 {
 
     private SimpleDateFormat databaseDateformat = new SimpleDateFormat("yyyyMMdd");
@@ -31,6 +34,12 @@ public class TestActivity extends AppCompatActivity
     private DatabaseHandler myDb;
 
     private CardView taskCardItem;
+
+    private Toolbar myToolbar;
+
+    private ImageView editIcon;
+    private ImageView deleteIcon;
+    private ImageView backIcon;
 
     private CheckBox taskStatusCheckbox;
 
@@ -49,6 +58,8 @@ public class TestActivity extends AppCompatActivity
 
     private Resources resources;
 
+    private SectionOrTask task;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -57,7 +68,7 @@ public class TestActivity extends AppCompatActivity
         setupTransitions();
         init();
 
-        setTaskData(getIntent().getIntExtra("Task_ID", 1));
+        setTaskData();
     }
 
 
@@ -66,9 +77,20 @@ public class TestActivity extends AppCompatActivity
 
         this.myDb = new DatabaseHandler(this);
 
+        this.task = myDb.getTask(getIntent().getIntExtra("Task_ID", 1));
+
         fontawesomeTypeface = FontCache.get("fonts/fontawesome-webfont.ttf", this);
 
         this.taskCardItem = (CardView)findViewById(R.id.taskCardItem);
+        this.taskCardItem.setOnLongClickListener(this);
+
+        this.myToolbar = (Toolbar)findViewById(R.id.toolbar);
+        this.editIcon = (ImageView)myToolbar.findViewById(R.id.toolbar_editTaskIcon);
+        this.editIcon.setOnClickListener(this);
+        this.deleteIcon = (ImageView)myToolbar.findViewById(R.id.toolbar_deleteTaskIcon);
+        this.deleteIcon.setOnClickListener(this);
+        this.backIcon = (ImageView)myToolbar.findViewById(R.id.toolbar_backIcon);
+        this.backIcon.setOnClickListener(this);
 
         this.taskCardBackground = (LinearLayout)findViewById(R.id.taskCardBackground);
 
@@ -91,9 +113,9 @@ public class TestActivity extends AppCompatActivity
     }
 
 
-    private void setTaskData(int taskID)
+    private void setTaskData()
     {
-        SectionOrTask task = myDb.getTask(taskID);
+
 
         String taskName;
         String taskCategory;
@@ -132,6 +154,8 @@ public class TestActivity extends AppCompatActivity
         this.taskNameText.setText(taskName);
         this.taskCategoryText.setText(taskCategory);
         this.taskCategoryIconText.setText(getString(R.string.fa_icon_tag));
+        this.taskCategoryText.setTextColor(Color.parseColor(setTaskTextColor(task)));
+        this.taskCategoryIconText.setTextColor(Color.parseColor(setTaskTextColor(task)));
         this.taskDescriptionText.setText(taskDescription);
         this.taskDateText.setText(toUserFormat.format(taskCalendar.getTime()));
         this.taskTimeText.setText(taskTime);
@@ -154,6 +178,32 @@ public class TestActivity extends AppCompatActivity
 
 
         Log.d("TestActivity", "Time " + taskTime);
+
+
+    }
+
+
+
+
+    private String setTaskTextColor(SectionOrTask task)
+    {
+
+
+        String colorCode;
+
+  /*
+        myDb.addColor("#781054", "Travel");
+        myDb.addColor("#1d976c", "Work");
+        myDb.addColor("#1d5e97", "Home");
+        myDb.addColor("#0065ab", "To-Do");
+
+   */
+
+
+
+        colorCode = myDb.getColor(task.getCategory());
+
+        return colorCode;
 
 
     }
@@ -196,8 +246,6 @@ public class TestActivity extends AppCompatActivity
         {
             dayCount = -1;
         }
-
-
 
 
 
@@ -249,12 +297,7 @@ public class TestActivity extends AppCompatActivity
 
    */
 
-
-
-        this.taskCardBackground.setBackgroundColor(Color.parseColor(myDb.getColor(task.getCategory())));
-
-
-
+        taskCardBackground.setBackgroundColor(Color.parseColor(myDb.getColor(task.getCategory())));
 
     }
 
@@ -371,9 +414,64 @@ public class TestActivity extends AppCompatActivity
 
     }
 
+
+
     @Override
     public void onBackPressed()
     {
         super.onBackPressed();
+    }
+
+    @Override
+    public void onClick(View v)
+    {
+
+        int id = v.getId();
+
+
+        switch (id)
+        {
+            case R.id.toolbar_backIcon:
+                onBackPressed();
+                break;
+
+
+        }
+
+
+
+    }
+
+    @Override
+    public boolean onLongClick(View v)
+    {
+        int id = v.getId();
+
+        switch (id)
+        {
+            case R.id.taskCardItem:
+
+                if(this.task.getStatus() == 1)
+                {
+                    this.taskStatusCheckbox.setChecked(false);
+                    this.task.setStatus(0);
+
+                }
+                else
+                {
+                    this.taskStatusCheckbox.setChecked(true);
+                    this.task.setStatus(1);
+
+                }
+
+
+                myDb.updateTask(task);
+                break;
+        }
+
+        return false;
+
+
+
     }
 }

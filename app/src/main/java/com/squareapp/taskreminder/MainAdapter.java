@@ -412,17 +412,31 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private String getReadableDate(String dateString)
     {
+
         Calendar calendar = Calendar.getInstance();
-        try
+        String date = null;
+        String dateToday = dateFormat.format(now.getTime());
+
+        if(dateString.equals(dateToday))
         {
-            calendar.setTime(dateFormat.parse(dateString));
+            date = "Today";
         }
-        catch (ParseException e)
+        else
         {
-            e.printStackTrace();
+            try
+            {
+                calendar.setTime(dateFormat.parse(dateString));
+                date = simpleDateFormat.format(calendar.getTime());
+            }
+            catch (ParseException e)
+            {
+                e.printStackTrace();
+            }
         }
 
-        return simpleDateFormat.format(calendar.getTime());
+
+
+        return date;
     }
 
 
@@ -486,9 +500,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
 
-
         }
-
 
 
 

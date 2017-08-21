@@ -258,7 +258,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
 
             case R.id.toolbar_addNewTaskIcon:
-                fragmentManager.beginTransaction().replace(R.id.content_frame, new AddNewTaskFragment(), "AddNewTaskFragment").commit();
+                Intent addNewTaskIntent = new Intent(this, AddNewTaskActivity.class);
+                startActivity(addNewTaskIntent);
                 break;
 
             case R.id.toolbar_saveNewTaskIcon:

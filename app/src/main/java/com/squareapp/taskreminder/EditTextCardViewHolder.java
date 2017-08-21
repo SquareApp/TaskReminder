@@ -2,7 +2,6 @@ package com.squareapp.taskreminder;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -55,8 +54,8 @@ class EditTextCardViewHolder extends RecyclerView.ViewHolder
         nameEditText = (EditText)itemView.findViewById(R.id.nameEditText);
         descriptionEditText = (EditText)itemView.findViewById(R.id.descriptionEditText);
 
-        nameEditText.getBackground().mutate().setColorFilter(Color.parseColor("#8495f7"), PorterDuff.Mode.SRC_ATOP);
-        descriptionEditText.getBackground().mutate().setColorFilter(Color.parseColor("#8495f7"), PorterDuff.Mode.SRC_ATOP);
+        //nameEditText.getBackground().mutate().setColorFilter(Color.parseColor("#8495f7"), PorterDuff.Mode.SRC_ATOP);
+        //descriptionEditText.getBackground().mutate().setColorFilter(Color.parseColor("#8495f7"), PorterDuff.Mode.SRC_ATOP);
 
 
     }

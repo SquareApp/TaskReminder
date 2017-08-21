@@ -217,6 +217,20 @@ public class DatabaseHandler extends SQLiteOpenHelper
     }
 
 
+    public void updateColor(String category, String colorCode)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLOR_CATEGORY, category);
+        contentValues.put(COLOR_CODE, colorCode);
+
+
+        db.update(TABLE_COLORS, contentValues, COLOR_CATEGORY + " = ?",
+                new String[] { category});
+    }
+
+
 
 
 

@@ -25,8 +25,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
         android:layout_gravity="center_horizontal"
+        android:orientation="horizontal"
 
         >
 
@@ -35,10 +35,12 @@
             android:id="@+id/statusCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:buttonTint="#151515"
             android:clickable="false"
-            android:layout_gravity="center_vertical"
-            android:transitionName="cardTransition_CheckBox"/>
+            android:transitionName="cardTransition_CheckBox"
+
+            />
 
         <LinearLayout
 
