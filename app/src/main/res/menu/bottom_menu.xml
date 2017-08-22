@@ -16,7 +16,7 @@
         android:id="@+id/tab_recent"
         android:color="#ffffff"
         android:icon="@drawable/ic_restore"
-        android:title="Recent"/>
+        android:title="Due"/>
     <item
         android:color="#ffffff"
         android:icon="@drawable/ic_save_white"

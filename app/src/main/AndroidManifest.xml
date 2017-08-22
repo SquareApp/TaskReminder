@@ -36,6 +36,8 @@
         </activity>
         <activity android:name=".AddNewTaskActivity">
         </activity>
+        <activity android:name=".ActivityForTesting">
+        </activity>
     </application>
 
 </manifest>

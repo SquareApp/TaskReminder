@@ -113,6 +113,7 @@ public class BootReceiver extends BroadcastReceiver
         mBuilder.setColor(Color.rgb(16,171,110));
 
         mBuilder.setAutoCancel(true);
+        mBuilder.setPriority(android.support.v7.app.NotificationCompat.PRIORITY_HIGH);
 
         NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(task.getId(), mBuilder.build());

@@ -37,7 +37,7 @@
                     android:minHeight="?attr/actionBarSize"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="#ffffff"
+                    android:background="@color/colorPrimary"
                     android:elevation="4dp">
 
 
@@ -67,6 +67,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="right"
                             android:src="@drawable/ic_playlist_add_white"
+                            android:tint="@android:color/white"
                             android:visibility="visible"
                             android:layout_marginRight="10dp"/>
 

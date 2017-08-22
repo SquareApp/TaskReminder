@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private AddNewTaskFragment addNewTaskFragment;
     private AllTasksFragment allTasksFragment;
 
+    private AddNewTaskActivity addNewTaskActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
 
         AddNewTaskFragment addNewTaskFragment = (AddNewTaskFragment) getFragmentManager().findFragmentByTag("AddNewTaskFragment");
+
 
             Log.d("AddNewTask", "Success");
 
@@ -258,8 +261,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         {
 
             case R.id.toolbar_addNewTaskIcon:
-                Intent addNewTaskIntent = new Intent(this, AddNewTaskActivity.class);
-                startActivity(addNewTaskIntent);
+                //Intent addNewTaskIntent = new Intent(this, AddNewTaskActivity.class);
+                Intent testIntent = new Intent(this, ActivityForTesting.class);
+                startActivity(testIntent);
                 break;
 
             case R.id.toolbar_saveNewTaskIcon:

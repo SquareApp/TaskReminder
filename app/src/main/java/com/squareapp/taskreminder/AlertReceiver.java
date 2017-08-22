@@ -75,6 +75,7 @@ public class AlertReceiver extends BroadcastReceiver
 
 
         mBuilder.setAutoCancel(true);
+        mBuilder.setPriority(android.support.v7.app.NotificationCompat.PRIORITY_HIGH);
         mBuilder.setDefaults(android.support.v7.app.NotificationCompat.DEFAULT_ALL);
 
         NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);

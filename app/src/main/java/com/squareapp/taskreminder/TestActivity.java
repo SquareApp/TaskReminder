@@ -322,34 +322,8 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
     private GradientDrawable setLayoutBackground(SectionOrTask task)
     {
-
-
-
-
-
         GradientDrawable gradientDrawable = new GradientDrawable();
-
-        if(task.getCategory().equals("Work"))
-        {
-            gradientDrawable.setColor(Color.parseColor(getString(R.string.colorWorkStart)));
-        }
-
-
-        if(task.getCategory().equals("Travel"))
-        {
-            gradientDrawable.setColor(Color.parseColor(getString(R.string.colorTravelStart)));
-        }
-
-        if(task.getCategory().equals("Home"))
-        {
-            gradientDrawable.setColor(Color.parseColor(getString(R.string.colorHomeStart)));
-        }
-
-        if(task.getCategory().equals("To-Do"))
-        {
-            gradientDrawable.setColor(Color.parseColor(getString(R.string.colorTodoStart)));
-        }
-
+        gradientDrawable.setColor(Color.parseColor("#263238"));
         return gradientDrawable;
     }
 

@@ -17,7 +17,7 @@ public class AddNewTaskAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private LayoutInflater inflater;
 
-    public int amn = 3;
+    public int amn = 2;
 
     public EditTextCardViewHolder editTextCardViewHolder;
 

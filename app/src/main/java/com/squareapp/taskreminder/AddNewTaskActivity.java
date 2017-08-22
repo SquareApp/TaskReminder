@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class AddNewTaskActivity extends AppCompatActivity
 {
 
-    private RecyclerView myRecyclerView;
+    public RecyclerView recyclerView;
 
     private LinearLayoutManager lm;
 
@@ -29,7 +29,7 @@ public class AddNewTaskActivity extends AppCompatActivity
 
     private void init()
     {
-        myRecyclerView = (RecyclerView)findViewById(R.id.addNewTaskRecyclerView);
+        recyclerView = (RecyclerView)findViewById(R.id.addNewTaskRecyclerView);
 
         lm = new LinearLayoutManager(this);
 
@@ -43,8 +43,8 @@ public class AddNewTaskActivity extends AppCompatActivity
         categoryList.add("Home");
 
 
-        myRecyclerView.setAdapter(addNewTaskAdapter);
-        myRecyclerView.setLayoutManager(lm);
+        recyclerView.setAdapter(addNewTaskAdapter);
+        recyclerView.setLayoutManager(lm);
 
 
 
