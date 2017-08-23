@@ -7,7 +7,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#00117c"
+        android:textColor="@color/colorAccent"
         android:layout_gravity="center_vertical"
         android:textSize="15dp"
         android:padding="15dp"

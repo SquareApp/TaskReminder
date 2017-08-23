@@ -7,4 +7,5 @@
 
 
     <color name="dividerColor">@android:color/darker_gray</color>
+    <color name="editText">@android:color/darker_gray</color>
 </resources>

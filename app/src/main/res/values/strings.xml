@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">TaskReminder</string>
 
+    <string name="titleEditTextError">This field cannot be blank!</string>
+
 
 </resources>

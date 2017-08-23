@@ -49,9 +49,13 @@
                 android:textStyle="bold"/>
 
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
 
                 <EditText
+                    android:id="@+id/titleEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="50dp"
@@ -63,7 +67,12 @@
                     android:maxLines="10"
                     />
 
+
+
+                </LinearLayout>
+
                 <TextView
+                    android:id="@+id/titleAmnText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="50"
@@ -113,8 +122,10 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
                 >
+
+
 
 
                 <android.support.design.widget.TextInputLayout
@@ -122,9 +133,14 @@
                     android:layout_height="wrap_content">
 
                     <EditText
+                        android:id="@+id/descriptionEditText"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Content (optional)"/>
+                        android:hint="Content (optional)"
+                        android:backgroundTint="@color/colorAccent"
+                        android:drawableLeft="@drawable/ic_content_paste"
+                        android:drawableTint="@color/colorAccent"
+                        />
 
 
                 </android.support.design.widget.TextInputLayout>
@@ -136,7 +152,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginTop="10dp"
                 >
+
 
 
 
@@ -149,7 +167,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Add to list"
-                        app:met_floatingLabel="normal"
+                        android:drawableLeft="@drawable/ic_list"
+                        android:drawableTint="@color/colorAccent"
 
                         />
 
@@ -200,25 +219,17 @@
                 >
 
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginRight="2dp"
-                    android:src="@drawable/ic_access_alarms_white_24dp"
-                    android:tint="@color/colorAccent"
-                    />
-
 
                 <EditText
                     android:id="@+id/timeEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="30dp"
                     android:focusableInTouchMode="false"
                     android:hint="Time"
                     android:textColor="@color/colorAccent"
                     android:textColorHint="@color/colorAccent"
+                    android:drawableLeft="@drawable/ic_access_alarms_white_24dp"
+                    android:drawableTint="@color/colorAccent"
                     />
 
 
@@ -231,24 +242,18 @@
                 android:orientation="horizontal">
 
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_event"
-                    android:tint="@color/colorAccent"
-                    />
 
 
                 <EditText
                     android:id="@+id/dateEditText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="30dp"
                     android:focusableInTouchMode="false"
                     android:hint="Date"
                     android:textColor="@color/colorAccent"
                     android:textColorHint="@color/colorAccent"
+                    android:drawableLeft="@drawable/ic_date_range_white"
+                    android:drawableTint="@color/colorAccent"
 
                     />
 
@@ -286,24 +291,17 @@
             android:orientation="horizontal">
 
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_color_lens_black_24dp"
-                android:tint="@color/colorAccent"
-                />
-
 
             <EditText
                 android:id="@+id/colorEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="30dp"
                 android:focusableInTouchMode="false"
                 android:hint="Color"
                 android:textColor="@color/colorAccent"
                 android:textColorHint="@color/colorAccent"
+                android:drawableLeft="@drawable/ic_color_lens_black_24dp"
+                android:drawableTint="@color/colorAccent"
 
                 />
 
