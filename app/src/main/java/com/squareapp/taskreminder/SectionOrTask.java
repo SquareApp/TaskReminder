@@ -17,6 +17,7 @@ public class SectionOrTask
 
     private int status;
     private int id;
+    private int colorCode;
 
     private boolean isTask;
 
@@ -34,7 +35,7 @@ public class SectionOrTask
 
 
 
-    public static SectionOrTask createTask(String name, String category, String description, int status, int id, String date, String time)
+    public static SectionOrTask createTask(String name, String category, String description, int status, int id, String date, String time, int colorCode)
     {
         SectionOrTask task = new SectionOrTask();
         task.name = name;
@@ -45,6 +46,7 @@ public class SectionOrTask
         task.id = id;
         task.date = date;
         task.time = time;
+        task.colorCode = colorCode;
 
         return task;
     }
@@ -116,6 +118,11 @@ public class SectionOrTask
     public String getDescription()
     {
         return description;
+    }
+
+    public int getColorCode()
+    {
+        return colorCode;
     }
 }
 

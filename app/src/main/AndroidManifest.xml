@@ -23,6 +23,7 @@
         </activity>
 
         <receiver android:name=".AlertReceiver"/>
+
         <receiver
             android:name=".BootReceiver"
             android:enabled="true">
@@ -32,7 +33,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".TestActivity">
+        <activity android:name=".ViewTaskActivity">
         </activity>
         <activity android:name=".AddNewTaskActivity">
         </activity>

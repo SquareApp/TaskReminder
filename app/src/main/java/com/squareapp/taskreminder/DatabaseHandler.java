@@ -29,10 +29,9 @@ public class DatabaseHandler extends SQLiteOpenHelper
     private static final String KEY_STATUS = "status";          //column 4
     private static final String KEY_DATE_DATABASE = "date";     //column 5
     private static final String KEY_TIME = "time";              //Column 6
+    private static final String KEY_COLOR = "color";            //column 7
 
-    private static final String COLOR_ID = "id";                  //column 0
-    private static final String COLOR_CODE = "name";              //column 1
-    private static final String COLOR_CATEGORY = "category";      //column 2
+
 
 
     public int task_ID = -1;
@@ -66,18 +65,11 @@ public class DatabaseHandler extends SQLiteOpenHelper
                 KEY_DESCRIPTION + " TEXT, " +
                 KEY_STATUS + " INTEGER," +
                 KEY_DATE_DATABASE + " TEXT," +
-                KEY_TIME + " TEXT" + ")";
+                KEY_TIME + " TEXT, " +
+                KEY_COLOR + " INTEGER" +")";
         db.execSQL(CREATE_TASKS_TABLE);
 
 
-
-
-
-        String CREATE_COLOR_TABLE = "CREATE TABLE " + TABLE_COLORS + "(" + COLOR_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
-                COLOR_CODE + " TEXT," +
-                COLOR_CATEGORY + " TEXT"
-                + ")";
-        db.execSQL(CREATE_COLOR_TABLE);
 
 
     }
@@ -106,25 +98,13 @@ public class DatabaseHandler extends SQLiteOpenHelper
         contentValues.put(KEY_STATUS, task.getStatus());
         contentValues.put(KEY_DATE_DATABASE, task.getDate());
         contentValues.put(KEY_TIME, task.getTime());
+        contentValues.put(KEY_COLOR, task.getColorCode());
 
         this.task_ID = (int) db.insert(TABLE_TASKS, null, contentValues);
         db.close();
     }
 
 
-    public void addColor(String color, String category)
-    {
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues colorContentValues = new ContentValues();
-        colorContentValues.put(COLOR_CODE, color);
-        colorContentValues.put(COLOR_CATEGORY, category);
-
-        db.insert(TABLE_COLORS, null, colorContentValues);
-
-        db.close();
-
-    }
 
     public SectionOrTask getTask(int id)
     {
@@ -144,7 +124,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
                 Integer.parseInt(cursor.getString(4)),
                 Integer.parseInt(cursor.getString(0)),
                 cursor.getString(5),
-                cursor.getString(6));
+                cursor.getString(6),
+                Integer.parseInt(cursor.getString(7)));
 
         cursor.close();
 
@@ -153,26 +134,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
     }
 
 
-    public String getColor(String category)
-    {
-        SQLiteDatabase db = getReadableDatabase();
 
-
-        String query = "SELECT * FROM " + TABLE_COLORS + " WHERE " + COLOR_CATEGORY + " = " +  "'" + category + "'";
-        String colorCode = null;
-
-        Cursor cursor = db.rawQuery(query, null);
-        if(cursor != null)
-            cursor.moveToFirst();
-
-
-        colorCode = cursor.getString(1);
-
-        cursor.close();
-
-        return colorCode;
-
-    }
 
 
     public int getTaskCount(int status)
@@ -217,18 +179,6 @@ public class DatabaseHandler extends SQLiteOpenHelper
     }
 
 
-    public void updateColor(String category, String colorCode)
-    {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COLOR_CATEGORY, category);
-        contentValues.put(COLOR_CODE, colorCode);
-
-
-        db.update(TABLE_COLORS, contentValues, COLOR_CATEGORY + " = ?",
-                new String[] { category});
-    }
 
 
 
@@ -249,19 +199,7 @@ public class DatabaseHandler extends SQLiteOpenHelper
     }
 
 
-    public void deleteColor(String category)
-    {
-        SQLiteDatabase db = getWritableDatabase();
 
-        String whereClause = COLOR_CATEGORY + " =?";
-        String[] whereArguments = new String[]
-                {
-                        category
-                };
-
-        db.delete(TABLE_COLORS, whereClause, whereArguments);
-        db.close();
-    }
 
     public void deleteTable(String table)
     {
@@ -295,7 +233,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
                                 Integer.parseInt(allTasksCursor.getString(4)),
                                 Integer.parseInt(allTasksCursor.getString(0)),
                                 allTasksCursor.getString(5),
-                                allTasksCursor.getString(6)));
+                                allTasksCursor.getString(6),
+                                Integer.parseInt(allTasksCursor.getString(7))));
             }
             while (allTasksCursor.moveToNext());
         }
@@ -325,7 +264,8 @@ public class DatabaseHandler extends SQLiteOpenHelper
                                 Integer.parseInt(allTasksCursor.getString(4)),
                                 Integer.parseInt(allTasksCursor.getString(0)),
                                 allTasksCursor.getString(5),
-                                allTasksCursor.getString(6)));
+                                allTasksCursor.getString(6),
+                                Integer.parseInt(allTasksCursor.getString(7))));
             }
             while (allTasksCursor.moveToNext());
         }

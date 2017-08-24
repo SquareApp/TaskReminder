@@ -9,7 +9,6 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
@@ -71,7 +70,7 @@ public class AlertReceiver extends BroadcastReceiver
         mBuilder.setContentTitle(task.getName());
         mBuilder.setContentText(task.getCategory());
         mBuilder.setTicker(task.getName());
-        mBuilder.setColor(Color.rgb(16,171,110));
+        mBuilder.setColor(task.getColorCode());
 
 
         mBuilder.setAutoCancel(true);

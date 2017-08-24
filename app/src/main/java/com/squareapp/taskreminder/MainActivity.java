@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.CoordinatorLayout;
@@ -183,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                 //region INSERT_IN_DATABSE
 
-                myDb.addTask(SectionOrTask.createTask(name, category, description,  0, 0, dateString, timeString));
+                myDb.addTask(SectionOrTask.createTask(name, category, description,  0, 0, dateString, timeString, Color.parseColor("#ffffff")));
 
                 //endregion
 

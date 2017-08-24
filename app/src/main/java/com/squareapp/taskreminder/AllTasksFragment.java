@@ -296,7 +296,7 @@ public class AllTasksFragment extends Fragment
 
         for (int i = 0; i < themesList.size(); i++)
         {
-            dataList.add(themesList.get(i).getPosition() +offset, SectionOrTask.createSection(themesList.get(i).getDate()));
+            dataList.add(themesList.get(i).getPosition() + offset, SectionOrTask.createSection(themesList.get(i).getDate()));
             offset +=1;
         }
 

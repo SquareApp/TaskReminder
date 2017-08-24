@@ -8,6 +8,7 @@
 
     
     <android.support.v7.widget.Toolbar
+        android:id="@+id/myToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -26,6 +27,7 @@
 
 
             <ImageView
+                android:id="@+id/toolbar_saveIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/ic_save_white"
@@ -63,7 +65,7 @@
                     android:textCursorDrawable="@drawable/edittext_cursor_drawable"
                     android:textColorHint="#ffffff"
                     android:textColor="#ffffff"
-                    android:maxLength="50"
+                    android:maxLength="70"
                     android:maxLines="10"
                     />
 
@@ -75,7 +77,7 @@
                     android:id="@+id/titleAmnText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="50"
+                    android:text="70"
                     android:textSize="12dp"
                     android:textColor="#ffffff"
                     android:textStyle="bold"
@@ -128,9 +130,11 @@
 
 
 
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
 
                     <EditText
                         android:id="@+id/descriptionEditText"
@@ -166,9 +170,9 @@
                         android:id="@+id/categorySpinner"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Add to list"
                         android:drawableLeft="@drawable/ic_list"
                         android:drawableTint="@color/colorAccent"
+                        android:hint="Add to list"
 
                         />
 
@@ -218,6 +222,13 @@
                 android:orientation="horizontal"
                 >
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_access_alarms_white_24dp"
+                    android:tint="@color/colorAccent"
+                    android:layout_gravity="center_vertical"
+                    />
 
 
                 <EditText
@@ -228,8 +239,7 @@
                     android:hint="Time"
                     android:textColor="@color/colorAccent"
                     android:textColorHint="@color/colorAccent"
-                    android:drawableLeft="@drawable/ic_access_alarms_white_24dp"
-                    android:drawableTint="@color/colorAccent"
+
                     />
 
 
@@ -242,6 +252,13 @@
                 android:orientation="horizontal">
 
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/ic_date_range_white"
+                    android:tint="@color/colorAccent"
+                    android:layout_gravity="center_vertical"
+                    />
 
 
                 <EditText
@@ -252,8 +269,6 @@
                     android:hint="Date"
                     android:textColor="@color/colorAccent"
                     android:textColorHint="@color/colorAccent"
-                    android:drawableLeft="@drawable/ic_date_range_white"
-                    android:drawableTint="@color/colorAccent"
 
                     />
 
@@ -290,7 +305,14 @@
             android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
-
+            <ImageView
+                android:id="@+id/colorIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_color_lens_black_24dp"
+                android:tint="@color/colorAccent"
+                android:layout_gravity="center_vertical"
+                />
 
             <EditText
                 android:id="@+id/colorEditText"
@@ -300,10 +322,10 @@
                 android:hint="Color"
                 android:textColor="@color/colorAccent"
                 android:textColorHint="@color/colorAccent"
-                android:drawableLeft="@drawable/ic_color_lens_black_24dp"
-                android:drawableTint="@color/colorAccent"
 
                 />
+
+
 
 
         </LinearLayout>

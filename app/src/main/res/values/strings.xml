@@ -2,6 +2,7 @@
     <string name="app_name">TaskReminder</string>
 
     <string name="titleEditTextError">This field cannot be blank!</string>
+    <string name="select_colour">Select a colour</string>
 
 
 </resources>

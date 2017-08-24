@@ -24,7 +24,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class TestActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener
+public class ViewTaskActivity extends AppCompatActivity implements View.OnClickListener, View.OnLongClickListener
 {
 
     private SimpleDateFormat databaseDateformat = new SimpleDateFormat("yyyyMMdd");
@@ -154,8 +154,8 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         this.taskNameText.setText(taskName);
         this.taskCategoryText.setText(taskCategory);
         this.taskCategoryIconText.setText(getString(R.string.fa_icon_tag));
-        this.taskCategoryText.setTextColor(Color.parseColor(setTaskTextColor(task)));
-        this.taskCategoryIconText.setTextColor(Color.parseColor(setTaskTextColor(task)));
+        this.taskCategoryText.setTextColor(setTaskTextColor(task));
+        this.taskCategoryIconText.setTextColor(setTaskTextColor(task));
         this.taskDescriptionText.setText(taskDescription);
         this.taskDateText.setText(toUserFormat.format(taskCalendar.getTime()));
         this.taskTimeText.setText(taskTime);
@@ -174,7 +174,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         setTaskCardColors(task);
-        this.taskCardBackground.setBackground(setLayoutBackground(task));
+        //this.taskCardBackground.setBackground(setLayoutBackground(task));
 
 
         Log.d("TestActivity", "Time " + taskTime);
@@ -185,11 +185,11 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-    private String setTaskTextColor(SectionOrTask task)
+    private int setTaskTextColor(SectionOrTask task)
     {
 
 
-        String colorCode;
+        int colorCode;
 
   /*
         myDb.addColor("#781054", "Travel");
@@ -201,7 +201,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-        colorCode = myDb.getColor(task.getCategory());
+        colorCode = task.getColorCode();
 
         return colorCode;
 
@@ -297,7 +297,7 @@ public class TestActivity extends AppCompatActivity implements View.OnClickListe
 
    */
 
-        taskCardBackground.setBackgroundColor(Color.parseColor(myDb.getColor(task.getCategory())));
+        taskCardBackground.setBackgroundColor(task.getColorCode());
 
     }
 

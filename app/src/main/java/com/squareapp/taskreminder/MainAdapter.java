@@ -166,8 +166,8 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
             h.taskCategoryText.setText(item.getCategory());
-            h.taskCategoryText.setTextColor(Color.parseColor(setTaskCardColors(item)));
-            h.taskCategoryIconText.setTextColor(Color.parseColor(setTaskCardColors(item)));
+            h.taskCategoryText.setTextColor(setTaskCardColors(item));
+            h.taskCategoryIconText.setTextColor(setTaskCardColors(item));
 
             if (item.getStatus() == 0)
             {
@@ -184,7 +184,7 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
                 @Override
                 public void onClick(View v)
                 {
-                    Intent viewIntent = new Intent(context, TestActivity.class);
+                    Intent viewIntent = new Intent(context, ViewTaskActivity.class);
                     viewIntent.putExtra("Task_ID", item.getId());
 
                     DoneFragment doneFragment = (DoneFragment) fragmentManager.findFragmentByTag("DoneFragment");
@@ -262,11 +262,11 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     }
 
-    private String setTaskCardColors(SectionOrTask task)
+    private int setTaskCardColors(SectionOrTask task)
     {
 
 
-        String colorCode;
+        int taskColor;
 
   /*
         myDb.addColor("#781054", "Travel");
@@ -278,9 +278,9 @@ public class MainAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
 
 
-        colorCode = db.getColor(task.getCategory());
+        taskColor = task.getColorCode();
 
-        return colorCode;
+        return taskColor;
 
 
     }
